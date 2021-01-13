@@ -1,0 +1,84 @@
+Necessary Python modules list and commands
+Net-SNMP
+
+Download the net-snmp .tar.gz file from http://www.net-snmp.org/download.html (current release, click source) on your Ubuntu VM
+
+By default, it will be saved to /home/osboxes/Downloads
+
+tar -zxf net-snmp-5.8.tar.gz
+
+cd net-snmp-5.8
+
+./configure (press Enter for every question to go with the defaults)
+
+make
+
+sudo make install
+
+
+
+pip3.8
+
+sudo apt install curl
+
+sudo apt install python3.8-distutils
+
+curl https://bootstrap.pypa.io/get-pip.py | sudo -H python3.8
+
+sudo apt-get install gcc python3.8-dev
+
+
+
+EasySNMP
+
+sudo apt-get install libsnmp-dev snmp-mibs-downloader
+
+sudo pip3.8 install easysnmp
+
+
+
+Matplotlib
+
+sudo pip3.8 install matplotlib
+
+
+
+NetworkX
+
+sudo pip3.8 install networkx
+
+
+
+tkinter
+
+sudo apt install python3.8-tk
+
+
+
+nmap
+
+sudo apt install nmap
+
+
+
+python-nmap
+
+sudo pip3.8 install python-nmap
+
+
+
+pprint
+
+sudo pip3.8 install pprint
+
+
+
+netmiko
+
+sudo pip3.8 install netmiko
+
+
+
+Scapy
+
+sudo pip3.8 install scapy

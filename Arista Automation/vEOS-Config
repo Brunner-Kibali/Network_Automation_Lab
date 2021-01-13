@@ -1,0 +1,140 @@
+Necessary Arista vEOS configuration for this course
+Note! By default, you can log in to each Arista device using username admin and no password (just hit Enter).
+
+
+
+Arista A1:
+
+
+
+localhost>enable
+localhost#conf t
+localhost(config)#hostname A1
+A1(config)#zerotouch disable
+
+A1(config)#int ethernet 1
+A1(config-if-Ma1)#ip address 192.168.1.1 255.255.255.0
+A1(config-if-Et1)#no switchport
+A1(config-if-Et1)#no shutdown
+
+A1(config)#int ethernet 2
+A1(config-if-Et1)#ip address 192.168.12.1 255.255.255.0
+A1(config-if-Et1)#no switchport
+A1(config-if-Ma1)#no shutdown
+
+A1(config)#int ethernet 3
+A1(config-if-Et3)#ip address 192.168.31.1 255.255.255.0
+A1(config-if-Et3)#no switchport
+A1(config-if-Et3)#no shutdown
+
+A1(config)#int loopback 1
+A1(config-if-Lo1)#ip address 1.1.1.1 255.255.255.0
+
+A1(config)#username admin secret python1
+
+A1(config)#ip routing
+A1(config)#router ospf 1
+A1(config-router-ospf)#network 192.168.1.0 0.0.0.255 area 0
+A1(config-router-ospf)#network 192.168.12.0 0.0.0.255 area 0
+A1(config-router-ospf)#network 192.168.31.0 0.0.0.255 area 0
+A1(config-router-ospf)#network 1.1.1.1 0.0.0.0 area 0
+
+A1(config)#copy run start
+
+A1(config)#show ip int brief
+                                                                        Address
+Interface       IP Address          Status     Protocol          MTU    Owner
+--------------- ------------------- ---------- ------------- ---------- -------
+Ethernet1       192.168.1.1/24      up         up               1500
+Ethernet2       192.168.12.1/24     up         up               1500
+Ethernet3       192.168.31.1/24     up         up               1500
+Loopback1       1.1.1.1/24          up         up              65535
+Management1     unassigned          down       down             1500
+
+
+
+
+Arista A2:
+
+
+
+localhost>enable
+localhost#conf t
+localhost(config)#hostname A2
+A2(config)#zerotouch disable
+
+A2(config)#int ethernet 1
+A2(config-if-Et1)#ip address 192.168.12.2 255.255.255.0
+A2(config-if-Et1)#no switchport
+A2(config-if-Et1)#no shutdown
+
+A2(config)#int ethernet 2
+A2(config-if-Et2)#ip address 192.168.23.2 255.255.255.0
+A2(config-if-Et2)#no switchport
+A2(config-if-Et2)#no shutdown
+
+A2(config)#int loopback 1
+A2(config-if-Lo1)#ip address 2.2.2.2 255.255.255.0
+
+A2(config)#username admin secret python2
+
+A2(config)#ip routing
+A2(config)#router ospf 1
+A2(config-router-ospf)#network 192.168.12.0 0.0.0.255 area 0
+A2(config-router-ospf)#network 192.168.23.0 0.0.0.255 area 0
+A2(config-router-ospf)#network 2.2.2.2 0.0.0.0 area 0
+
+A2(config)#copy run start
+
+A2(config)#show ip int brief
+                                                                        Address
+Interface       IP Address          Status     Protocol          MTU    Owner
+--------------- ------------------- ---------- ------------- ---------- -------
+Ethernet1       192.168.12.2/24     up         up               1500
+Ethernet2       192.168.23.2/24     up         up               1500
+Loopback1       2.2.2.2/24          up         up              65535
+Management1     unassigned          down       down             1500
+
+
+
+
+Arista A3:
+
+
+
+localhost>enable
+localhost#conf t
+localhost(config)#hostname A3
+A3(config)#zerotouch disable
+
+A3(config)#int ethernet 2
+A3(config-if-Et2)#ip address 192.168.23.3 255.255.255.0
+A3(config-if-Et2)#no switchport
+A3(config-if-Et2)#no shutdown
+
+A3(config)#int ethernet 3
+A3(config-if-Et3)#ip address 192.168.31.3 255.255.255.0
+A3(config-if-Et3)#no switchport
+A3(config-if-Et3)#no shutdown
+
+A3(config)#int loopback 1
+A3(config-if-Lo1)#ip address 3.3.3.3 255.255.255.0
+
+A3(config)#username admin secret python3
+
+A3(config)#ip routing
+A3(config)#router ospf 1
+A3(config-router-ospf)#network 192.168.23.0 0.0.0.255 area 0
+A3(config-router-ospf)#network 192.168.31.0 0.0.0.255 area 0
+A3(config-router-ospf)#network 3.3.3.3 0.0.0.0 area 0
+
+A3(config)#copy run start
+
+A3#show ip int brief
+                                                                        Address
+Interface       IP Address          Status      Protocol         MTU    Owner
+--------------- ------------------- ----------- ------------- --------- -------
+Ethernet2       192.168.23.3/24     up          up              1500
+Ethernet3       192.168.31.3/24     up          up              1500
+Loopback1       3.3.3.3/24          up          up              65535
+Management1     unassigned          down        down            1500

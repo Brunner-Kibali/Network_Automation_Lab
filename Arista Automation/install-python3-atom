@@ -1,0 +1,17 @@
+Necessary Linux commands to install Python 3 and Atom
+Python 3.8.x
+
+sudo apt update
+sudo apt install software-properties-common
+sudo add-apt-repository ppa:deadsnakes/ppa
+# Press [ENTER] to continue or Ctrl-c to cancel adding it.
+sudo apt update
+sudo apt install python3.8
+python3.8 --version
+
+
+Atom editor
+
+sudo add-apt-repository ppa:webupd8team/atom
+sudo apt-get update
+sudo apt-get install atom
