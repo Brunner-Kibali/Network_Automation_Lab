@@ -7,6 +7,7 @@ app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///network.db'
 db = SQLAlchemy(app)
 
+
 # This is the database model object
 class Device(db.Model):
     __tablename__ = 'devices'
@@ -29,4 +30,3 @@ if __name__ == '__main__':
     db.session.add(r1)
     db.session.add(r2)
     db.session.commit()
-
