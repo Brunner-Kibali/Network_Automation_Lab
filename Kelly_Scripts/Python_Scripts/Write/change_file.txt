@@ -1,0 +1,12 @@
+config terminal
+snmp-server community V2018ooma!# RW 3
+snmp-server host 172.16.15.15 V2018ooma!#
+snmp-server host 172.16.15.18 V2018ooma!#
+snmp-server host 172.16.15.19 V2018ooma!#
+no snmp-server community simba RW 3
+no snmp-server host 172.16.15.15 simba
+no snmp-server host 172.16.15.18 simba
+no snmp-server host 172.16.15.19 simba
+end
+wr
+

@@ -1,0 +1,372 @@
+diffios: 172.16.1.20 (1/4)
+--- baseline
++++ comparison
+
+
++   1: R1#exit
++   2: aaa session-id common
++   3: boot-end-marker
++   4: boot-start-marker
++   5: ethernet lmi ce
++   6: hostname R1
++   7: interface GigabitEthernet0/0
++       ip address dhcp
++       ip nat outside
++       ip virtual-reassembly in
++       duplex auto
++       speed auto
++       media-type rj45
++   8: interface GigabitEthernet0/1
++       ip address 172.16.1.20 255.255.255.0
++       ip nat inside
++       ip virtual-reassembly in
++       duplex auto
++       speed auto
++       media-type rj45
++   9: interface GigabitEthernet0/2
++       no ip address
++       shutdown
++       duplex auto
++       speed auto
++       media-type rj45
++  10: interface GigabitEthernet0/3
++       no ip address
++       shutdown
++       duplex auto
++       speed auto
++       media-type rj45
++  11: ip cef
++  12: ip dhcp pool internal-client
++       network 172.16.1.0 255.255.255.0
++       default-router 172.16.1.20
++       dns-server 192.168.122.1
++  13: ip domain name scripting.com
++  14: ip forward-protocol nd
++  15: ip name-server 192.168.122.1
++  16: ip nat inside source list 1 interface GigabitEthernet0/0 overload
++  17: ip tcp synwait-time 5
++  18: mmi polling-interval 60
++  19: mmi snmp-timeout 180
++  20: multilink bundle-name authenticated
++  21: no cdp log mismatch duplex
++  22: no ip http secure-server
++  23: no ip http server
++  24: no ip icmp rate-limit unreachable
++  25: no ipv6 cef
++  26: no mmi auto-configure
++  27: no mmi pvc
++  28: no scheduler allocate
++  29: redundancy
++  30: service password-encryption
++  31: service timestamps debug datetime msec
++  32: service timestamps log datetime msec
++  33: username cisco password 7 00071A150754
+
+diffios: 172.16.1.21 (2/4)
+--- baseline
++++ comparison
+
+-   1: access-list 1 permit 172.16.1.0 0.0.0.255
+-   2: enable password 7 104D000A0618
+-   3: line vty 0 4
+-       password 7 030752180500
+-       transport input telnet ssh
+-   4: line vty 5 15
+-       password 7 030752180500
+-       transport input none
+
++   1: * Cisco in writing.                                                      *
++   2: * IOSv is strictly limited to use for evaluation, demonstration and IOS  *
++   3: * Technical Advisory Center. Any use or disclosure, in whole or in part, *
++   4: * education. IOSv is provided as-is and is not supported by Cisco's      *
++   5: * of the IOSv Software or Documentation to any third party for any       *
++   6: * purposes is expressly prohibited except as otherwise authorized by     *
++   7: **************************************************************************
++   8: **************************************************************************^C
++   9: R2#exit
++  10: R2#show run
++  11: R2#terminal length 0
++  12: aaa session-id common
++  13: banner exec ^C
++  14: banner incoming ^C
++  15: boot-end-marker
++  16: boot-start-marker
++  17: control-plane
++  18: enable password cisco
++  19: ethernet lmi ce
++  20: hostname R2
++  21: interface GigabitEthernet0/0
++       ip address 172.16.1.21 255.255.255.0
++       duplex auto
++       speed auto
++       media-type rj45
++  22: interface GigabitEthernet0/1
++       no ip address
++       shutdown
++       duplex auto
++       speed auto
++       media-type rj45
++  23: interface GigabitEthernet0/2
++       no ip address
++       shutdown
++       duplex auto
++       speed auto
++       media-type rj45
++  24: interface GigabitEthernet0/3
++       no ip address
++       shutdown
++       duplex auto
++       speed auto
++       media-type rj45
++  25: ip cef
++  26: ip domain name scripting.com
++  27: ip forward-protocol nd
++  28: ip tcp synwait-time 5
++  29: line vty 0
++       transport input telnet ssh
++  30: line vty 1 4
++       transport input none
++  31: mmi polling-interval 60
++  32: mmi snmp-timeout 180
++  33: multilink bundle-name authenticated
++  34: no cdp log mismatch duplex
++  35: no ip domain lookup
++  36: no ip http secure-server
++  37: no ip http server
++  38: no ip icmp rate-limit unreachable
++  39: no ipv6 cef
++  40: no mmi auto-configure
++  41: no mmi pvc
++  42: no scheduler allocate
++  43: no service password-encryption
++  44: redundancy
++  45: service timestamps debug datetime msec
++  46: service timestamps log datetime msec
++  47: username cisco password 0 cisco
++  48: version 15.6
+
+diffios: 172.16.1.22 (3/4)
+--- baseline
++++ comparison
+
+-   1: access-list 1 permit 172.16.1.0 0.0.0.255
+-   2: enable password 7 104D000A0618
+-   3: line con 0
+-       exec-timeout 0 0
+-       privilege level 15
+-   4: line vty 0 4
+-       password 7 030752180500
+-   5: line vty 5 15
+-       password 7 030752180500
+-       transport input none
+
++   1: *                                                                        *
++   2: * By using the software, you agree to abide by the terms and conditions  *
++   3: * Early Field Trial agreement.  Under no circumstances may this software *
++   4: * IOSv - Cisco Systems Confidential                                      *
++   5: * Prohibited.                                                            *
++   6: * This software is provided as is without warranty for internal          *
++   7: * Unauthorized use or distribution of this software is expressly         *
++   8: * be used for production purposes or deployed in a production            *
++   9: * conditions of the Cisco End User License Agreement at                  *
++  10: * development and testing purposes only under the terms of the Cisco     *
++  11: * environment.                                                           *
++  12: * http://www.cisco.com/go/eula                                           *
++  13: * of the Cisco Early Field Trial Agreement as well as the terms and      *
++  14: **************************************************************************
++  15: **************************************************************************^C
++  16: S1#exit
++  17: S1#show run
++  18: S1#terminal length 0
++  19: aaa session-id common
++  20: banner exec ^C
++  21: banner incoming ^C
++  22: boot-end-marker
++  23: boot-start-marker
++  24: control-plane
++  25: enable password cisco
++  26: hostname S1
++  27: interface GigabitEthernet0/0
++       no switchport
++       ip address 172.16.1.22 255.255.255.0
++       negotiation auto
++  28: interface GigabitEthernet0/1
++       media-type rj45
++       negotiation auto
++  29: interface GigabitEthernet0/2
++       media-type rj45
++       negotiation auto
++  30: interface GigabitEthernet0/3
++       media-type rj45
++       negotiation auto
++  31: interface GigabitEthernet1/0
++       media-type rj45
++       negotiation auto
++  32: interface GigabitEthernet1/1
++       media-type rj45
++       negotiation auto
++  33: interface GigabitEthernet1/2
++       media-type rj45
++       negotiation auto
++  34: interface GigabitEthernet1/3
++       media-type rj45
++       negotiation auto
++  35: interface GigabitEthernet2/0
++       media-type rj45
++       negotiation auto
++  36: interface GigabitEthernet2/1
++       media-type rj45
++       negotiation auto
++  37: interface GigabitEthernet2/2
++       media-type rj45
++       negotiation auto
++  38: interface GigabitEthernet2/3
++       media-type rj45
++       negotiation auto
++  39: interface GigabitEthernet3/0
++       media-type rj45
++       negotiation auto
++  40: interface GigabitEthernet3/1
++       media-type rj45
++       negotiation auto
++  41: interface GigabitEthernet3/2
++       media-type rj45
++       negotiation auto
++  42: interface GigabitEthernet3/3
++       media-type rj45
++       negotiation auto
++  43: ip cef
++  44: ip domain-name scripting.com
++  45: ip forward-protocol nd
++  46: line con 0
++       transport preferred none
++  47: line vty 0 4
++       logging synchronous
++  48: line vty 5 15
++       logging synchronous
++  49: no ip http secure-server
++  50: no ip http server
++  51: no ipv6 cef
++  52: no service password-encryption
++  53: service compress-config
++  54: service timestamps debug datetime msec
++  55: service timestamps log datetime msec
++  56: spanning-tree extend system-id
++  57: spanning-tree mode pvst
++  58: username cisco password 0 cisco
++  59: version 15.0
++  60: vlan internal allocation policy ascending
+
+diffios: 172.16.1.23 (4/4)
+--- baseline
++++ comparison
+
+-   1: access-list 1 permit 172.16.1.0 0.0.0.255
+-   2: enable password 7 104D000A0618
+-   3: line con 0
+-       exec-timeout 0 0
+-       privilege level 15
+-   4: line vty 0 4
+-       password 7 030752180500
+-   5: line vty 5 15
+-       password 7 030752180500
+-       transport input none
+
++   1: *                                                                        *
++   2: * By using the software, you agree to abide by the terms and conditions  *
++   3: * Early Field Trial agreement.  Under no circumstances may this software *
++   4: * IOSv - Cisco Systems Confidential                                      *
++   5: * Prohibited.                                                            *
++   6: * This software is provided as is without warranty for internal          *
++   7: * Unauthorized use or distribution of this software is expressly         *
++   8: * be used for production purposes or deployed in a production            *
++   9: * conditions of the Cisco End User License Agreement at                  *
++  10: * development and testing purposes only under the terms of the Cisco     *
++  11: * environment.                                                           *
++  12: * http://www.cisco.com/go/eula                                           *
++  13: * of the Cisco Early Field Trial Agreement as well as the terms and      *
++  14: **************************************************************************
++  15: **************************************************************************^C
++  16: S2#exit
++  17: S2#show run
++  18: S2#terminal length 0
++  19: aaa session-id common
++  20: banner exec ^C
++  21: banner incoming ^C
++  22: boot-end-marker
++  23: boot-start-marker
++  24: control-plane
++  25: enable password cisco
++  26: hostname S2
++  27: interface GigabitEthernet0/0
++       no switchport
++       ip address 172.16.1.23 255.255.255.0
++       negotiation auto
++  28: interface GigabitEthernet0/1
++       media-type rj45
++       negotiation auto
++  29: interface GigabitEthernet0/2
++       media-type rj45
++       negotiation auto
++  30: interface GigabitEthernet0/3
++       media-type rj45
++       negotiation auto
++  31: interface GigabitEthernet1/0
++       media-type rj45
++       negotiation auto
++  32: interface GigabitEthernet1/1
++       media-type rj45
++       negotiation auto
++  33: interface GigabitEthernet1/2
++       media-type rj45
++       negotiation auto
++  34: interface GigabitEthernet1/3
++       media-type rj45
++       negotiation auto
++  35: interface GigabitEthernet2/0
++       media-type rj45
++       negotiation auto
++  36: interface GigabitEthernet2/1
++       media-type rj45
++       negotiation auto
++  37: interface GigabitEthernet2/2
++       media-type rj45
++       negotiation auto
++  38: interface GigabitEthernet2/3
++       media-type rj45
++       negotiation auto
++  39: interface GigabitEthernet3/0
++       media-type rj45
++       negotiation auto
++  40: interface GigabitEthernet3/1
++       media-type rj45
++       negotiation auto
++  41: interface GigabitEthernet3/2
++       media-type rj45
++       negotiation auto
++  42: interface GigabitEthernet3/3
++       media-type rj45
++       negotiation auto
++  43: ip cef
++  44: ip domain-name scripting.com
++  45: ip forward-protocol nd
++  46: line con 0
++       transport preferred none
++  47: line vty 0 4
++       logging synchronous
++  48: line vty 5 15
++       logging synchronous
++  49: no ip http secure-server
++  50: no ip http server
++  51: no ipv6 cef
++  52: no service password-encryption
++  53: service compress-config
++  54: service timestamps debug datetime msec
++  55: service timestamps log datetime msec
++  56: spanning-tree extend system-id
++  57: spanning-tree mode pvst
++  58: username cisco password 0 cisco
++  59: version 15.0
++  60: vlan internal allocation policy ascending
+
+diffios: Report: /home/osboxes/Documents/diffios-master/examples/diffs.csv

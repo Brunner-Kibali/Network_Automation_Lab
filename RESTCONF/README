@@ -1,0 +1,8 @@
+RESTCONF is an IETF draft and is a particular implementation of
+a RESTful API. It is an HTTP-based protocol that provides a pro‐
+grammatic interface for accessing data that is modeled in YANG.
+
+
+The RESTCONF API supports the GET, PUT, PATCH, POST, and DELETE request
+types, making it extremely powerful to perform particular network operations
+

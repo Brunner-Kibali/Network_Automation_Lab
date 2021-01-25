@@ -1,0 +1,9 @@
+conf t
+no snmp-server community V2018ooma!# RW 3
+no snmp-server host 172.16.15.15 V2018ooma!# 
+no snmp-server host 172.16.15.18 V2018ooma!# 
+no snmp-server host 172.16.15.19 V2018ooma!# 
+end
+wr
+!
+

@@ -1,0 +1,30 @@
+- name: fortigate config backup
+  connection: local
+  hosts: fortigate
+
+  tasks:
+    - name: get current config
+      uri:
+        url: 'https://{{ ansible_host }}/api/v2/monitor/system/config/backup/?scope=global&amp;access_token={{ access_token }}'
+        return_content: yes
+        validate_certs: no
+      register: current_config
+
+    - name: write config to local file
+      local_action: copy content={{ current_config.content }} dest=./{{ inventory_hostname }}_{{ ansible_date_time.date }}.txt
+
+OR:
+
+- name: backup Fortigate
+  connection: local
+  hosts: fortigate
+
+  tasks:
+  - name: Backup Config
+    fortios_config:
+      host: "{{ansible_host}}"
+      username: remote-admin
+      password: superS3cr3tpassword
+      backup: yes
+      backup_path: /tmp
+      backup_filename: fg_config.bak

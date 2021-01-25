@@ -1,0 +1,23 @@
+enable password 7 104D000A0618
+!
+aaa new-model
+!
+access-list 1 permit 172.16.1.0 0.0.0.255
+!
+
+!
+line con 0
+ exec-timeout 0 0
+ privilege level 15
+ logging synchronous
+line aux 0
+ exec-timeout 0 0
+ privilege level 15
+ logging synchronous
+line vty 0 4
+ password 7 030752180500
+ transport input telnet ssh
+line vty 5 15
+ password 7 030752180500
+ transport input none
+!

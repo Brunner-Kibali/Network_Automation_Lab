@@ -1,0 +1,91 @@
+Backup FortiOS config with Ansible – with fortios_config module
+TL;DR
+fortios_config is based on pyFG which is not updated for 2 years
+If you have non-ascii characters in Fortigate, you should not use it
+Compare the result and your manual backup. Know what is omitted.
+Ansible is easy to start, just don’t forget it’s a massive open source project. And not everything is up to date.
+Ansible is one of the most widely used tool because it is relatively easy to use, and it can be used for various tasks. It is kind of a swiss army knife for any engineers.
+
+However it becomes difficult if you want to do a little complicated tasks. There are few reasons, but one of them is its dependency to external modules, especially for network devices.
+
+One day, I tried to get the Fortigate config using Ansible. It sounds quite easy task. It was not my first time to do the job, but it somehow threw the error saying “Error reading running config” and I couldn’t get the config backup. After some troubleshoot, I realized the cause was unicode handling in Ansible network module(fortios) and dependent packages(pyFG).
+
+I checked the pyFG repository, and found there were numbers of PR, but it was not updated for this 2 years. Though it is a natural thing for an opensource project, it is a pity that these popular libraries are left unmaintained.
+
+Nevertheless, if you want to use this module *just for backup*, you can refer below. But I highly recommend look for another module, which I will introduce in another post.
+
+You can try this code if you have non-ascii character in your Fortigate…
+
+[ tested environment]
+
+Ubuntu 16.04
+Ansible 2.7.9
+Python 2.7.12
+Fortigate On Demand on AWS FortiOS 6.0.4
+
+[ playbook ]
+/etc/ansible$ cat fortigate-test.yml
+- name: backup Fortigate
+  connection: local
+  hosts: fortigate
+
+  tasks:
+  - name: Backup Config
+    fortios_config:
+      host: "{{ansible_host}}"
+      username: remote-admin
+      password: superS3cr3tpassword
+      backup: yes
+      backup_path: /tmp
+      backup_filename: fg_config.bak
+
+[ symptom ]
+
+/etc/ansible$ sudo ansible-playbook fortigate-test.yml
+
+PLAY [backup Fortigate] **************************************************************************************************************************************
+
+TASK [Gathering Facts] ***************************************************************************************************************************************
+ok: [x.x.x.x]
+
+TASK [Backup Config] *****************************************************************************************************************************************
+fatal: [x.x.x.x]: FAILED! => {"changed": false, "msg": "Error reading running config"}
+	to retry, use: --limit @/etc/ansible/fortigate-test.retry
+
+PLAY RECAP ***************************************************************************************************************************************************
+x.x.x.x              : ok=1    changed=0    unreachable=0    failed=1
+
+
+[ Result ]
+
+/etc/ansible$ sudo ansible-playbook fortigate-test.yml
+
+PLAY [backup Fortigate] **************************************************************************************************************************************
+
+TASK [Gathering Facts] ***************************************************************************************************************************************
+ok: [x.x.x.x]
+
+TASK [Backup Config] *****************************************************************************************************************************************
+ok: [x.x.x.x]
+
+PLAY RECAP ***************************************************************************************************************************************************
+x.x.x.x               : ok=2    changed=0    unreachable=0    failed=0
+
+
+And result config also shows the characters correctly:
+
+config firewall policy
+      edit 1
+          set fsso disable
+          set name "インターネットアクセス"
+          set service "ALL"
+          set schedule "always"
+          set srcaddr "all"
+          set dstintf "port1"
+          set srcintf "port1"
+          set nat enable
+          set action accept
+          set dstaddr "all"
+       next
+end
+

@@ -1,0 +1,11 @@
+
+from jinja2 import Environment, FileSystemLoader
+import yaml
+
+ENV = Environment(loader=FileSystemLoader('.'))
+
+template = ENV.get_template("chained_filters_template.j2")
+
+with open("interface_configs.yml") as f:
+    interfaces = yaml.load(f)
+    print(template.render(interface_list=interfaces))

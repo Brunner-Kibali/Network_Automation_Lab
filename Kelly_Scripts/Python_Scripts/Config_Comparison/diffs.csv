@@ -1,0 +1,49 @@
+Comparison,Baseline,Missing
+172.16.1.20,baseline.txt,"enable password 7 104D000A0618
+
+line vty 0 4
+ password 7 030752180500
+ transport input telnet ssh
+
+line vty 5 15
+ password 7 030752180500
+ transport input none"
+172.16.1.21,baseline.txt,"access-list 1 permit 172.16.1.0 0.0.0.255
+
+enable password 7 104D000A0618
+
+line vty 0 4
+ password 7 030752180500
+ transport input telnet ssh
+
+line vty 5 15
+ password 7 030752180500
+ transport input none"
+172.16.1.22,baseline.txt,"access-list 1 permit 172.16.1.0 0.0.0.255
+
+enable password 7 104D000A0618
+
+line con 0
+ exec-timeout 0 0
+ privilege level 15
+
+line vty 0 4
+ password 7 030752180500
+
+line vty 5 15
+ password 7 030752180500
+ transport input none"
+172.16.1.23,baseline.txt,"access-list 1 permit 172.16.1.0 0.0.0.255
+
+enable password 7 104D000A0618
+
+line con 0
+ exec-timeout 0 0
+ privilege level 15
+
+line vty 0 4
+ password 7 030752180500
+
+line vty 5 15
+ password 7 030752180500
+ transport input none"

@@ -1,0 +1,13 @@
+{% for interface in interface_list %}
+
+interface {{ interface.name }}
+    description {{ interface.desc|upper }}
+    {% if interface.uplink %}
+        switchport mode trunk
+    {% else %}
+        switchport access vlan {{ interface.vlan }}
+        switchport mode access
+
+    {% endif %}
+
+{% endfor %}

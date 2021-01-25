@@ -1,0 +1,15 @@
+Fortigate RestAPI Config Backup – FortiOS 6.0.4
+
+Previously I wrote a post how to backup the Fortigate config using session based authentication.
+As per the API reference, this is considered legacy, and other authentication method –API token, is preferred.
+In this post, I demonstrate how to use FortiOS RestAPI with API token.
+And I will introduce how to parse current configuration.
+
+I used FortiOS 6.0.4 to deploy this, and it is most likely not working with other version(especially 5.x).
+
+The flow is as follows:
+
+1. Create access profile for API user
+2. Create API user in Fortigate
+3. Generate API token for API user
+4. Send request and get the backup config

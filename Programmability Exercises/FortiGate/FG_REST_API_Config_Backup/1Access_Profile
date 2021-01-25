@@ -1,0 +1,141 @@
+1. Create access profile
+
+To get the backup, you need to have a permission for sysgrp.
+If you need to access part –e.g. logs/fw, you can add them.
+
+I create a profile “readOnly” here:
+
+FGTAWS0004BE1ADE # config system accprofile
+
+FGTAWS0004BE1ADE (accprofile) # edit readOnly
+
+new entry 'readOnly' added
+
+FGTAWS0004BE1ADE (readOnly) # set sysgrp read
+
+FGTAWS0004BE1ADE (readOnly) # end
+
+2. Create API user in Fortigate
+Using the profile you created in step 1, you can create a user for API access.
+
+The configuration is straight forward.
+
+However, trusthost seems to have some bug and it doesn’t identify
+some CIDR notation(e.g. 0.0.0.0/0) correctly, and you need to create specific host entry(with 32 bit mask):
+
+FGTAWS0004BE1ADE # config system api-user
+
+FGTAWS0004BE1ADE (api-user) # edit api-admin
+new entry 'api-admin' added
+
+FGTAWS0004BE1ADE (api-admin) # set accprofile "readOnly"
+
+FGTAWS0004BE1ADE (api-admin) # set vdom root
+
+FGTAWS0004BE1ADE (api-admin) # config trusthost
+
+FGTAWS0004BE1ADE (trusthost) # edit 1
+new entry '1' added
+
+FGTAWS0004BE1ADE (1) # set ipv4-trusthost 'ip_address_of_your_machine' 255.255.255.255
+
+FGTAWS0004BE1ADE (1) # end
+
+FGTAWS0004BE1ADE (api-admin) # end
+
+3. Generate API token
+Once user is ready, you can generate API key.
+Please note this API key is shown only when the key is generated, and it cannot be retrieved after you generate:
+
+FGTAWS0004BE1ADE # execute api-user generate-key api-admin
+New API key: 'your_api_token'
+
+NOTE: The bearer of this API key will be granted all access privileges assigned to the api-user api-admin.
+
+4. Test
+All the necessary elements are ready, and it’s time to test.
+You can test it straight away with cUrl like,
+ `curl -k ‘https://<your_fortigate_address>/api/v2/cmdb/firewall/address?vdom=root&access_token=<your_api_token>’.
+
+I made a short python script so that I can reuse later. You can save this as ‘fortigate.py’ in your working folder.
+
+And you can import this module and call config_download to get the local copy of current configuration:
+
+>>> import fortigate
+>>>
+>>> ip_addr = 'Fortigate_IP_Address'
+>>> api_token = 'API_TOKEN'
+>>>
+>>> if (fortigate.config_download(ip_addr, api_token, 'backup20190215.conf')):
+...   print('Done!')
+... else:
+...   print('Error!!')
+...
+Done!
+>>>
+>>> with open('backup20190215.conf', 'r') as f:
+...   f.readline()
+...
+'#config-version=FGTAWS-6.0.4-FW-build0231-190107:opmode=0:vdom=0:user=api-admin\n'
+>>>
+
+Configure Ansible inventory and playbook
+In your Ansible environment, configure inventory file.
+In my case, I just use default file in /etc/ansible/hosts for demonstration purpose.
+API_token is specific to each device, so it is registered as an individual variable.
+
+$ cat hosts
+
+[fortigate]
+x.x.x.x access_token=w4q9qtfbGry3Nbc40kHjsk9mxG****
+y.y.y.y access_token=tfy8c9b8Nxw6N3Q5Q5bg9z69dn****
+
+In playbook, I use uri module to retrieve the config, and use copy to write the content into the local file.
+In my example below, I backup all the configuration,
+but you can change scope(vdom) or any other parameter to suite your needs.
+I’m gathering facts simply because I need to use ansible_date_time variable,
+you can disable fact gathering and save a few seconds per run if you don’t need these variable appended in your config.
+
+$ cat fortigate_backup.yml
+- name: fortigate config backup
+  connection: local
+  hosts: fortigate
+
+  tasks:
+    - name: get current config
+      uri:
+        url: 'https://{{ ansible_host }}/api/v2/monitor/system/config/backup/?scope=global&amp;access_token={{ access_token }}'
+        return_content: yes
+        validate_certs: no
+      register: current_config
+
+    - name: write config to local file
+      local_action: copy content={{ current_config.content }} dest=./{{ inventory_hostname }}_{{ ansible_date_time.date }}.txt
+
+Test:
+Once it’s configured, you can just run the playbook.
+
+$ ansible-playbook fortigate_backup.yml
+
+PLAY [fortigate config backup] *******************************************************************************************************************************************************
+
+TASK [Gathering Facts] ***************************************************************************************************************************************************************
+ok: [x.x.x.x]
+ok: [y.y.y.y]
+
+TASK [get current config] ************************************************************************************************************************************************************
+ok: [x.x.x.x]
+ok: [y.y.y.y]
+
+TASK [write config to local file] ****************************************************************************************************************************************************
+changed: [x.x.x.x -> localhost]
+changed: [y.y.y.y -> localhost]
+
+PLAY RECAP ***************************************************************************************************************************************************************************
+x.x.x.x               : ok=3    changed=1    unreachable=0    failed=0
+y.y.y.y               : ok=3    changed=1    unreachable=0    failed=0
+
+Now you should have backup file where you specified in the playbook.
+In my case, I got two backup config in the same directory as the playbook.
+And of course it correctly parses the Non-Ascii characters.
+

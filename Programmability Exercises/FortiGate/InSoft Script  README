@@ -1,0 +1,29 @@
+Exercise task: (The file explains how to connect and gives the command to change hostname)
+
+Create small script that will:
+
+1. Connect to Fortigate
+
+2. Read IP from command line
+    Either:
+
+    show system interface
+
+    or:
+
+    show system interface ?
+
+3. Read admin credentials from CLI
+    get system admin
+
+4. Change the hostname (again, read from command line):
+
+    config system global
+        set hostname MYHOSTNAME
+    end
+
+
+
+
+
+
