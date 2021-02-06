@@ -100,8 +100,8 @@ def background(f):
 
 @app.route('/devices/', methods=['GET'])
 def get_devices():
-    return jsonify({'device': [device.get_url() 
-                               for device in Device.query.all()]})
+    return jsonify({'device': [device.get_url()
+                               for device in Device.query.device()]})
 
 @app.route('/devices/<int:id>', methods=['GET'])
 def get_device(id):
@@ -121,7 +121,7 @@ def get_device_version(id):
 @app.route('/devices/<device_role>/version', methods=['GET'])
 @background
 def get_role_version(device_role):
-    device_id_list = [device.id for device in Device.query.all() if device.role == device_role]
+    device_id_list = [device.id for device in Device.query.device() if device.role == device_role]
     result = {}
     for id in device_id_list:
         device = Device.query.get_or_404(id)

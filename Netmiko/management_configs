@@ -1,0 +1,63 @@
+===============================================================================================================================
+IOS
+================================================================================================================================
+
+int gi0/0
+no shutdown
+ip add dhcp
+exit
+username admin pri 15 pass cisco
+line vty 0 4
+login local
+exec-timeout 0 5
+transport input all
+crypto key generate rsa module 1024
+ip domain-name networkjourney.com
+
+=================================================================================================================================
+CISCO_ASA:
+=================================================================================================================================
+
+interface GigabitEthernet0/0
+nameif INSIDE
+security-level 100
+ip address dhcp
+no shutdown
+username admin password cisco privilege 15
+aaa authentication telnet console LOCAL
+ssh 0.0.0.0 0.0.0.0 INSIDE
+ssh timeout 1
+
+=================================================================================================================================
+ARISTA:
+=================================================================================================================================
+
+zero-touch cancel
+enable
+conf t
+hostname ARSITASWITCH
+interface eth1
+no shutdown
+no switchport
+ip add dhcp
+username network pri 15 password automation
+management ssh
+idle-timeout 1
+no shutdown
+exit
+copy run start
+
+================================================================================================================================
+JUNOS vSRX:
+================================================================================================================================
+
+set system login user admin class super-user-local authentication plain-text-password
+set system host-name JUNOX_SRX
+set system root-authentication encrypted-password-value "********"
+set system domain-name networkjourney.com
+set system login user admin class super-user authentication encrypted-password "********"
+set interfaces ge-0/0/0 unit 0 family inet address 192.168.32.197/24
+set system services web-management http
+set system services telnet
+set system services ssh
+set routing-options static route 0.0.0.0/0 next-hop 192.168.32.1

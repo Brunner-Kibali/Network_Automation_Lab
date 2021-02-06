@@ -23,7 +23,6 @@ def main():
         base_url="https://sandboxdnac.cisco.com",
         username="devnetuser",
         password="Cisco123!",
-        verify=False
     )
 
     # Use the devices.get_device_list() method to get a list of devices,

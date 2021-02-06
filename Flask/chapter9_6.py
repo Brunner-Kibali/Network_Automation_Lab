@@ -53,8 +53,8 @@ class Device(db.Model):
 
 @app.route('/devices/', methods=['GET'])
 def get_devices():
-    return jsonify({'device': [device.get_url() 
-                               for device in Device.query.all()]})
+    return jsonify({'device': [device.get_url()
+                               for device in Device.query.device()]})
 
 
 @app.route('/devices/<int:id>', methods=['GET'])
