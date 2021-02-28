@@ -1,0 +1,24 @@
+---
+- name: " Validation Traffic Forwarding with NAPALM"
+  hosts: junos:&pe
+  vars:
+    rr: 10.100.1.254
+    max_delay: 5   # This is 5 msec 
+  tasks:
+    - name: "P1T1: Ping Remote Desintation using NAPALM"
+      napalm_ping:
+        hostname: "{{ ansible_host }}"
+        username: "{{ ansible_user }}"
+        password: "{{ ansible_ssh_pass }}"
+        dev_os: "{{ ansible_network_os }}"
+        destination: "{{ rr }}"
+        count: 2
+      register: rr_ping
+    
+    - name: Validate Packet Loss is Zero and No Delay
+      assert:
+        that:
+          - rr_ping.ping_results.keys() | list | first == 'success'
+          - rr_ping.ping_results['success'].packet_loss == 0
+          - rr_ping.ping_results['success'].rtt_avg < max_delay
+

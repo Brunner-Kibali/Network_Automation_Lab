@@ -1,0 +1,124 @@
+! R1 Export ACME
+! Export routes from ACME VRF into BGP
+
+conf t
+
+do show run | section router bgp
+
+router bgp 65536
+address-family ipv4 vrf 101:ACME
+redistribute ospf 101 vrf 101:ACME
+end
+
+show run | section router bgp
+
+show ip bgp vpnv4 rd 1.1.1.1:1 labels
+
+show bgp vpnv4 unicast rd 1.1.1.1:1 labels
+
+show bgp vpnv4 unicast vrf 101:ACME labels
+
+
+
+show mpls forwarding-table vrf 101:ACME
+
+show ip cef vrf 101:ACME 172.16.111.2/32
+
+show bgp vpnv4 unicast vrf 101:ACME
+
+show bgp vpnv4 unicast vrf 101:ACME 172.16.111.2/32
+
+
+
+! R1 Import routes from BGP into ACME VRF
+
+conf t
+router ospf 101 vrf 101:ACME
+redistribute bgp 65536 subnets
+exit
+
+
+! R1 Export CBT Routes
+
+
+do show run | section router bgp
+
+router bgp 65536
+address-family ipv4 vrf 102:CBT
+redistribute eigrp 102
+end
+
+show run | section router bgp
+
+show bgp vpnv4 unicast vrf 102:CBT
+
+show bgp vpnv4 unicast vrf 102:CBT labels
+
+show mpls forwarding-table vrf 102:CBT
+
+show ip cef vrf 102:CBT 172.16.222.2/32
+
+
+! R1 Import CBT Routes
+
+! CBT-1 show ip route before and after
+show ip route
+
+conf t
+
+router eigrp 1
+address-family ipv4 vrf 102:CBT autonomous-system 102
+redistribute bgp 65536 metric 1 1 1 1 1
+
+end
+
+
+
+
+
+
+
+
+
+
+R5:
+
+! Export routes into BGP for ACME
+
+conf t
+
+do show run | section router bgp
+
+router bgp 65536
+
+address-family ipv4 vrf 101:ACME
+redistribute rip
+ 
+end
+
+! ACME 2
+
+! ACME 2
+show ip protocols
+
+conf t
+
+router rip
+no auto-summary
+end
+
+! R5
+
+show bgp vpnv4 unicast vrf 101:ACME labels
+
+! import from BGP
+conf t
+router rip
+address-family ipv4 vrf 101:ACME
+redistribute bgp 65536 metric 5
+end
+
+! acme site 2
+
+show ip route
+

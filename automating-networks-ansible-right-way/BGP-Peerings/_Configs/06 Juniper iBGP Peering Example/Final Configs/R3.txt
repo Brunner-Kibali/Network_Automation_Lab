@@ -1,0 +1,64 @@
+system {
+    host-name R3;
+    root-authentication {
+        encrypted-password "$1$vcCWBKMS$qkyGXiYGybEBjl06X3QkZ."; ## SECRET-DATA
+    }
+    syslog {
+        user * {
+            any emergency;
+        }
+        file messages {
+            any notice;
+            authorization info;
+        }
+        file interactive-commands {
+            interactive-commands any;
+        }
+    }
+}
+interfaces {
+    ge-0/0/0 {
+        unit 0 {
+            family inet {
+                address 10.23.23.3/24;
+            }
+        }
+    }
+    ge-0/0/1 {
+        unit 0 {
+            family inet {
+                address 10.34.34.3/24;
+            }
+        }
+    }
+    lo0 {
+        unit 0 {
+            family inet {
+                address 3.3.3.3/24;
+            }
+        }
+    }
+}
+routing-options {
+    autonomous-system 65222;
+}
+protocols {
+    bgp {
+        group INTERNAL {
+            type internal;
+            neighbor 2.2.2.2 {
+                local-address 3.3.3.3;
+            }
+            neighbor 4.4.4.4 {
+                local-address 3.3.3.3;
+            }
+        }
+    }
+    ospf {
+        area 0.0.0.0 {
+            interface lo0.0;
+            interface ge-0/0/0.0;
+            interface ge-0/0/1.0;
+        }
+    }
+}

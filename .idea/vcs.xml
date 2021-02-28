@@ -2,7 +2,10 @@
 <project version="4">
   <component name="VcsDirectoryMappings">
     <mapping directory="$PROJECT_DIR$" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/globomantics_crm" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/managing-cisco-networks-infrastructure-as-code/05/demos/m5/yang_oc" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/managing-cisco-networks-infrastructure-as-code/06/demos/m6/yang_big" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/managing-cisco-networks-infrastructure-as-code/06/yang_big" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/python-52-weeks" vcs="Git" />
   </component>
 </project>

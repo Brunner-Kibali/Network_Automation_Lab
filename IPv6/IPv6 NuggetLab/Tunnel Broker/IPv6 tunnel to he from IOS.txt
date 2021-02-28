@@ -1,0 +1,25 @@
+configure terminal
+interface Tunnel0
+description Hurricane Electric IPv6 Tunnel Broker
+no ip address
+ipv6 enable
+ipv6 address 2001:470:c:898::2/64
+tunnel source 72.193.35.28
+tunnel destination 66.220.18.42
+tunnel mode ipv6ip
+ipv6 route ::/0 Tunnel0
+end
+write
+
+
+%LINEPROTO-5-UPDOWN: Line protocol on Interface Tunnel0, changed state to up
+%SYS-5-CONFIG_I: Configured from console by vty0 (192.168.1.33)
+ICMPv6-ND: Sending NS for FE80::48C1:231C on Tunnel0
+ICMPv6-ND: DAD: FE80::48C1:231C is unique.
+ICMPv6-ND: Sending NA for FE80::48C1:231C on Tunnel0
+ICMPv6-ND: Address FE80::48C1:231C/10 is up on Tunnel0
+ICMPv6-ND: Sending NS for 2001:470:C:898::2 on Tunnel0
+ICMPv6-ND: DAD: 2001:470:C:898::2 is unique.
+ICMPv6-ND: Sending NA for 2001:470:C:898::2 on Tunnel0
+ICMPv6-ND: Address 2001:470:C:898::2/64 is up on Tunnel0
+Building configuration...

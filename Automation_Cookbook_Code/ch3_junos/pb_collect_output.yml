@@ -1,0 +1,35 @@
+---
+- name: Collect Network Logs
+  hosts: junos
+  vars:
+    log_folder: "logs"
+    op_cmds:
+      - show ospf neighbor 
+  tasks:
+    - name: "P1T1: Build Directories to Store Data"
+      block:
+        - name: "Create folder to store Device config"
+          file:
+            path: "{{ log_folder }}"
+            state: directory
+      run_once: yes
+      delegate_to: localhost
+
+    - name: "P1T2: Get Running configs from Devices"
+      junos_command:
+        commands: "{{ item }}"
+      loop: "{{ op_cmds }}"
+      register: logs_output
+
+    - debug: var=logs_output
+      delegate_to: localhost
+
+    - name: "P1T3: Save Running Config per Device"
+      copy:
+        content: "{{ item.stdout[0] }}"
+        dest: "{{ log_folder }}/{{inventory_hostname}}_{{ item.item | regex_replace(' ','_') }}.txt"
+      loop: "{{ logs_output.results }}"
+      delegate_to: localhost
+    
+
+

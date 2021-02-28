@@ -1,0 +1,20 @@
+---
+- name: "Build Arista DC Fabirc"
+  hosts: arista
+  vars_files: vlan_design.yml
+  tasks:
+    - name: Generate DC Fabric Configuration
+      import_role:
+        name: dc_fabric_config
+      delegate_to: localhost
+      tags: build      
+    
+    - name: "Deploy Configuration"
+      eos_config:
+        src: "{{config_dir}}/{{ inventory_hostname }}.cfg"
+        replace: config
+        save_when: changed
+      tags: deploy
+
+
+

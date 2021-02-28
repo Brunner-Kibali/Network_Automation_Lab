@@ -1,0 +1,63 @@
+system {
+    host-name R2;
+    root-authentication {
+        encrypted-password "$1$SMRMTU70$fTGcwCSe6JZ/1FuriRSp//"; ## SECRET-DATA
+    }
+    syslog {
+        user * {
+            any emergency;
+        }
+        file messages {
+            any notice;
+            authorization info;
+        }
+        file interactive-commands {
+            interactive-commands any;
+        }
+    }
+}
+interfaces {
+    ge-0/0/0 {
+        unit 0 {
+            family inet {
+                address 10.12.12.2/24;
+            }
+        }
+    }
+    ge-0/0/1 {
+        unit 0 {
+            family inet {
+                address 10.23.23.2/24;
+            }
+        }
+    }
+    lo0 {
+        unit 0 {
+            family inet {
+                address 2.2.2.2/24;
+            }
+        }
+    }
+}
+routing-options {
+    autonomous-system 65222;
+}
+protocols {
+    bgp {
+        group INTERNAL {
+            type internal;
+            neighbor 3.3.3.3 {
+                local-address 2.2.2.2;
+            }
+            neighbor 4.4.4.4 {
+                local-address 2.2.2.2;
+            }
+        }
+    }
+    ospf {
+        area 0.0.0.0 {
+            interface lo0.0;
+            interface ge-0/0/1.0;
+        }
+    }
+}

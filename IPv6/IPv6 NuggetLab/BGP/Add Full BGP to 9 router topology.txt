@@ -1,0 +1,318 @@
+! Confirm IGP is working
+! R2
+show ipv6 route 
+
+show ipv6 route | exclude L|C|via
+
+show ipv6 route ospf
+
+
+
+! R1
+! 
+
+conf t
+
+router bgp 1000
+bgp router-id 1.1.1.1
+neighbor 2013:DB8:6783:12::2 remote-as 2000
+neighbor 2013:DB8:6783:19::9 remote-as 4000
+
+address-family ipv6
+neighbor 2013:DB8:6783:12::2 activate
+neighbor 2013:DB8:6783:19::9 activate
+exit
+exit
+
+ipv6 route 2001:DB8:1::/48 Null0
+
+router bgp 1000
+address-family ipv6
+redistribute static
+end
+
+show bgp ?
+
+show bgp ipv6 ?
+
+! see the neighborships
+show bgp ipv6 unicast summary
+
+! see the BGP routes
+show bgp ipv6 unicast
+
+
+! R2
+
+conf t
+
+router bgp 2000
+bgp router-id 2.2.2.2
+neighbor 2001:DB8:2:3333::3 remote-as 2000
+neighbor 2001:DB8:2:3333::3 update-source Loopback0
+neighbor 2001:DB8:2:3333::3 next-hop-self
+neighbor 2013:DB8:6783:12::1 remote-as 1000
+
+address-family ipv6
+neighbor 2001:DB8:2:3333::3 activate
+neighbor 2001:DB8:2:3333::3 next-hop-self
+neighbor 2013:DB8:6783:12::1 activate
+exit
+exit
+
+ipv6 route 2001:DB8:2::/48 Null0
+router bgp 2000
+address-family ipv6
+redistribute static
+end
+
+show bgp  all neighbors
+
+
+
+
+! R3
+conf t
+
+ipv6 route 2001:DB8:2::/48 Null0
+
+router bgp 2000
+bgp router-id 3.3.3.3
+neighbor 2001:DB8:2:2222::2 remote-as 2000
+neighbor 2001:DB8:2:2222::2 update-source Loopback0
+neighbor 2001:DB8:2:2222::2 route-reflector-client
+neighbor 2001:DB8:2:4444::4 remote-as 2000
+neighbor 2001:DB8:2:4444::4 update-source Loopback0
+neighbor 2001:DB8:2:4444::4 route-reflector-client
+neighbor 2001:DB8:2:5555::5 remote-as 2000
+neighbor 2001:DB8:2:5555::5 update-source Loopback0
+neighbor 2001:DB8:2:5555::5 route-reflector-client
+
+address-family ipv6
+redistribute static
+neighbor 2001:DB8:2:2222::2 activate
+neighbor 2001:DB8:2:2222::2 route-reflector-client
+neighbor 2001:DB8:2:4444::4 activate
+neighbor 2001:DB8:2:4444::4 route-reflector-client
+neighbor 2001:DB8:2:5555::5 activate
+neighbor 2001:DB8:2:5555::5 route-reflector-client
+exit
+exit
+
+
+! R4
+
+conf t
+
+ipv6 route 2001:DB8:2::/48 Null0
+
+router bgp 2000
+bgp router-id 4.4.4.4
+neighbor 2001:DB8:2:3333::3 remote-as 2000
+neighbor 2001:DB8:2:3333::3 update-source Loopback0
+
+address-family ipv6
+redistribute static
+neighbor 2001:DB8:2:3333::3 activate
+end
+
+
+
+!R5
+
+conf t
+
+ipv6 route 2001:DB8:2::/48 Null0
+
+router bgp 2000
+bgp router-id 5.5.5.5
+neighbor 2001:DB8:2:3333::3 remote-as 2000
+neighbor 2001:DB8:2:3333::3 update-source Loopback0
+neighbor 2001:DB8:2:3333::3 next-hop-self
+neighbor 2013:DB8:6783:56::6 remote-as 3000
+
+address-family ipv6
+redistribute static
+neighbor 2001:DB8:2:3333::3 activate
+neighbor 2001:DB8:2:3333::3 next-hop-self
+neighbor 2013:DB8:6783:56::6 activate
+exit
+
+
+
+! R6
+
+conf t
+
+ipv6 route 2001:DB8:3::/48 Null0
+
+
+router bgp 3000
+bgp router-id 6.6.6.6
+neighbor 2001:DB8:3:7777::7 remote-as 3000
+neighbor 2001:DB8:3:7777::7 update-source Loopback0
+neighbor 2001:DB8:3:7777::7 next-hop-self
+neighbor 2013:DB8:6783:56::5 remote-as 2000
+
+address-family ipv6
+network 2001:db8:3::/48
+neighbor 2001:DB8:3:7777::7 activate
+neighbor 2001:DB8:3:7777::7 next-hop-self
+neighbor 2013:DB8:6783:56::5 activate
+end
+
+
+
+
+! R7
+
+conf t
+
+ipv6 route 2001:DB8:3::/48 Null0
+
+router bgp 3000
+bgp router-id 7.7.7.7
+neighbor 2001:DB8:3:6666::6 remote-as 3000
+neighbor 2001:DB8:3:6666::6 update-source Loopback0
+neighbor 2001:DB8:3:6666::6 next-hop-self
+neighbor 2013:DB8:6783:78::8 remote-as 4000
+
+address-family ipv6
+network 2001:db8:3::/48
+neighbor 2001:DB8:3:6666::6 activate
+neighbor 2001:DB8:3:6666::6 next-hop-self
+neighbor 2013:DB8:6783:78::8 activate
+end
+
+
+
+
+!R8
+
+conf t
+
+ipv6 route 2001:DB8:4::/48 Null0
+
+
+router bgp 4000
+bgp router-id 8.8.8.8
+neighbor 2001:DB8:4:9999::9 remote-as 4000
+neighbor 2001:DB8:4:9999::9 update-source Loopback0
+neighbor 2001:DB8:4:9999::9 next-hop-self
+neighbor 2013:DB8:6783:78::7 remote-as 3000
+
+address-family ipv6
+network 2001:db8:4::/48
+neighbor 2001:DB8:4:9999::9 activate
+neighbor 2001:DB8:4:9999::9 next-hop-self
+neighbor 2013:DB8:6783:78::7 activate
+end
+
+
+
+
+
+
+!R9
+
+conf t
+
+ipv6 route 2001:DB8:4::/48 Null0
+
+router bgp 4000
+bgp router-id 9.9.9.9
+neighbor 2001:DB8:4:8888::8 remote-as 4000
+neighbor 2001:DB8:4:8888::8 update-source Loopback0
+neighbor 2001:DB8:4:8888::8 next-hop-self
+neighbor 2013:DB8:6783:19::1 remote-as 1000
+
+address-family ipv6
+network 2001:db8:4::/48
+neighbor 2001:DB8:4:8888::8 activate
+neighbor 2001:DB8:4:8888::8 next-hop-self
+neighbor 2013:DB8:6783:19::1 activate
+end
+
+
+! Verify from R1
+show bgp ipv6 unicast 
+
+show bgp ipv6 unicast summary
+
+show bgp ipv6 unicast neighbors
+
+ping 2001:DB8:3:7777::7 source lo 0
+
+tclsh
+
+foreach IP {
+2001:DB8:1:1111::1
+2001:DB8:2:2222::2
+2001:DB8:2:3333::3
+2001:DB8:2:4444::4
+2001:DB8:2:5555::5
+2001:DB8:3:6666::6
+2001:DB8:3:7777::7
+2001:DB8:4:8888::8
+2001:DB8:4:9999::9
+} { puts "[exec ping $IP source lo 0 repeat 2 ]" }
+
+tclquit
+
+
+
+
+no bgp default ipv4-unicast
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

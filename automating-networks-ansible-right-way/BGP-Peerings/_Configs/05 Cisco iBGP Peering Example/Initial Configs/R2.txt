@@ -1,0 +1,73 @@
+!
+service timestamps debug datetime msec
+service timestamps log datetime msec
+!
+hostname R2
+!
+!
+!
+!
+no aaa new-model
+ip cef
+!
+!
+!
+!
+!
+!
+no ipv6 cef
+!
+!
+multilink bundle-name authenticated
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+interface gigabitEthernet 0/0
+ ip address 10.12.12.2 255.255.255.0
+ duplex full
+ ipv6 address 2001:1212:1212::2/64
+!
+interface gigabitEthernet 0/1
+ ip address 10.23.23.2 255.255.255.0
+ duplex full
+!
+ip forward-protocol nd
+!
+!
+no ip http server
+no ip http secure-server
+!
+!
+!
+!
+!
+!
+line con 0
+ exec-timeout 0 0
+ logging synchronous
+ stopbits 1
+line aux 0
+ stopbits 1
+line vty 0 4
+ login
+!
+!
+end

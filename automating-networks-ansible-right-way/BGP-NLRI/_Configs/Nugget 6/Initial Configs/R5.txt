@@ -1,0 +1,41 @@
+
+version 14.1R4.8;
+system {
+    host-name R5;
+    root-authentication {
+        encrypted-password "$1$P0AcWLeI$101/tAjnOk1tSx2ejHxFM0"; ## SECRET-DATA
+    }
+    syslog {
+        user * {
+            any emergency;
+        }
+        file messages {
+            any notice;
+            authorization info;
+        }
+        file interactive-commands {
+            interactive-commands any;
+        }
+    }
+}
+interfaces {
+    ge-0/0/0 {
+        unit 0 {
+            family inet {
+                address 10.45.45.5/24;
+            }
+        }
+    }
+}
+routing-options {
+    autonomous-system 65333;
+}
+protocols {
+    bgp {
+        group EXTERNAL {
+            type external;
+            peer-as 65222;
+            neighbor 10.45.45.4;
+        }
+    }
+}

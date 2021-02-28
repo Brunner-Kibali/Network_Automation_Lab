@@ -1,0 +1,28 @@
+
+system {
+    host-name R1;
+    root-authentication {
+        encrypted-password "$1$fbkh7IUs$dV7dnWyQ8JdLsCq18pyFE1"; ## SECRET-DATA
+    }
+    syslog {
+        user * {
+            any emergency;
+        }
+        file messages {
+            any notice;
+            authorization info;
+        }
+        file interactive-commands {
+            interactive-commands any;
+        }
+    }
+}
+interfaces {
+    ge-0/0/0 {
+        unit 0 {
+            family inet {
+                address 10.12.12.1/24;
+            }
+        }
+    }
+}

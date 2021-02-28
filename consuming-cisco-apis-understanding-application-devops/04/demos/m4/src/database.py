@@ -33,7 +33,6 @@ class Database:
             # self.data = xmltodict.parse(handle.read())["root"]
             # print(self.data)
 
-
     def balance(self, acct_id):
         """
         Determines the customer balance by finding the difference between

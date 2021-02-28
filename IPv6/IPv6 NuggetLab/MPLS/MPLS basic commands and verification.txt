@@ -1,0 +1,134 @@
+
+
+! PE-1 Verify Routing in General
+
+show ip route ospf
+
+ping 2.2.2.2 source 1.1.1.1
+
+traceroute 2.2.2.2
+
+!  PE-1
+
+conf t
+
+do show mpls ldp bindings 
+mpls label range 100 199
+mpls ip
+int g1/0
+mpls ip
+end
+
+show mpls ldp bindings local
+
+! P4
+
+conf t
+mpls label range 400 499
+mpls ip
+int g 0/0
+mpls ip
+int g 0/1
+mpls ip
+end
+
+show mpls ldp bindings local
+
+! P5
+
+conf t
+mpls label range 500 599
+mpls ip
+int g 0/0
+mpls ip
+int g 0/1
+mpls ip
+end
+
+show mpls ldp bindings local
+
+
+! P6
+
+conf t
+mpls label range 600 699
+mpls ip
+int g 0/0
+mpls ip
+int g 0/1
+mpls ip
+end
+
+show mpls ldp bindings local
+
+! PE-2
+
+conf t
+mpls label range 200 299
+mpls ip
+int g 0/0
+mpls ip
+end
+
+show mpls ldp bindings local
+
+! Trace the FEC for 1.1.1.1 on P5
+
+
+
+show mpls ldp bindings 1.1.1.1 32
+
+show ip route | inc 1.1.1.1
+
+show mpls ldp neighbor
+
+show mpls forwarding-table 1.1.1.1 32
+
+
+PE2
+
+
+show mpls forwarding-table 1.1.1.1 32
+
+! Capture
+
+traceroute 1.1.1.1 source loop 0
+
+traceroute 10.14.0.1 source loop 0
+
+
+! On P5 as example:
+
+conf t
+ip access-list extended STOP
+deny tcp any any eq telnet
+deny ICMP any host 1.1.1.1
+permit ip any any
+exit
+int g 0/1
+ip access-group STOP in
+ip access-group STOP out
+end
+
+show access-list
+
+! On PE2
+
+ping 1.1.1.1
+telnet 1.1.1.1
+traceroute 1.1.1.1
+
+show mpls forwarding-table 1.1.1.1 32
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,97 @@
+! R1 VRF Prep for ACME
+
+conf t
+vrf definition 101:ACME
+rd 1.1.1.1:1
+address-family ipv4
+route-target export 1.1.1.1:101
+route-target import 5.5.5.5:101
+exit
+exit
+
+interface fa2/0
+description connection to ACME site 1
+mac-address 0000.1111.1111
+no shutdown
+vrf forwarding 101:ACME
+ip address 172.16.101.1 255.255.255.252
+exit
+
+
+
+! R1 VRF  CBT
+vrf definition 102:CBT
+rd 1.1.1.1:2
+address-family ipv4
+route-target export 1.1.1.1:102
+route-target import 5.5.5.5:102
+exit
+exit
+
+interface fa2/1
+description Connection to CBT site 1
+mac-address 0000.1111.1111
+no shutdown
+vrf forwarding 102:CBT
+ip address 172.16.101.1 255.255.255.252
+end
+
+
+show ip int brief
+
+show vrf
+
+show ip route vrf 101:ACME
+
+
+
+
+
+! R5 ACME VRF
+
+conf t
+vrf definition 101:ACME
+rd 5.5.5.5:1
+address-family ipv4
+route-target export 5.5.5.5:101
+route-target import 1.1.1.1:101
+exit
+exit
+
+interface fa2/0
+description connection to ACME
+mac-address 0000.5555.5555
+no shutdown
+vrf forwarding 101:ACME
+ip address 192.168.202.1 255.255.255.252
+exit
+
+
+! R5 VRF CBT
+
+! Prep for CBT
+vrf definition 102:CBT
+rd 5.5.5.5:2
+address-family ipv4
+route-target export 5.5.5.5:102
+route-target import 1.1.1.1:102
+exit
+exit
+
+interface fa2/1
+description connection to CBT
+mac-address 0000.5555.5555
+no shutdown
+vrf forwarding 102:CBT
+ip address 192.168.202.1 255.255.255.252
+end
+
+
+
+show vrf
+
+show ip int brief
+
+show ip route vrf 101:ACME
+
+

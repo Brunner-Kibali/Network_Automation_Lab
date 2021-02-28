@@ -1,0 +1,100 @@
+================================
+EIGRP Summary route
+
+!R1
+
+! The two individual routes
+! for subnets 45a and 45b are both seen
+show ipv6 route | inc 45A|45B
+
+
+! R2 
+
+conf t
+
+! On R2 g 1/0 we can summarize the the 45a and 45b
+! networks into ...45a:: /63
+int g 1/0
+ipv6 summary-address eigrp 1 2001:db8:6783:45a::/63
+
+exit
+
+! R1
+
+show ipv6 route | inc 45A|45B
+
+
+=====================================
+! default route in EIGRP
+
+! R7
+
+conf t
+
+! Very that we can PING R8
+do ping 2001:DB8:6783:78::8
+
+! Add a default static route for R7 to use
+ipv6 route ::/0 2001:DB8:6783:78::8
+
+do show ipv6 route static
+
+! Redistribute the static default route into
+! EIGRP for the benefit of the rest of the
+! network.
+
+ipv6 router eigrp 1
+redistribute static metric 1 1 1 1 1
+
+exit
+
+!  all routers
+
+conf t
+no ipv6 router eigrp 1
+end
+
+! R1
+
+show ipv6 route | inc 45A|45B
+
+
+! R2
+
+conf t
+
+! verify the area number
+do show ipv6 ospf int brief
+
+! set up the summary with the
+! area 45 range command
+
+ipv6 router ospf 1
+area 45 range 2001:db8:6783:45a::/63
+exit
+
+
+!  R7 default route
+
+conf t
+ipv6 router ospf 1
+default-information originate always
+exit
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

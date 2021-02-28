@@ -1,0 +1,10 @@
+[core]
+syd-core01    ansible_host=172.20.2.2
+den-core01    ansible_host=172.20.2.4
+
+
+[iosxr:children]
+core
+
+
+

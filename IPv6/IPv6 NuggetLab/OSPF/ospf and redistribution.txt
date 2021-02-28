@@ -1,0 +1,307 @@
+
+ipv6 add 2001:db8:6783:
+
+
+conf t
+int g1/0
+ipv6 rip OurRip enable
+int g2/0
+ipv6 rip OurRip enable
+int loop 0
+ipv6 rip OurRip enable
+end
+
+
+conf t
+int g1/0
+no ipv6 rip OurRip enable
+int g2/0
+no ipv6 rip OurRip enable
+int loop 0
+no ipv6 rip OurRip enable
+exit
+no ipv6 rip OurRip enable
+end
+
+*******************************
+
+! R1
+
+conf t
+
+ipv6 router ospf 1
+router-id 1.1.1.1
+exit
+
+int g1/0
+ipv6 ospf 1 area 0.0.0.0
+! Could have said ipv6 ospf 1 area 0
+exit
+int loop 0
+ipv6 ospf 1 area 0.0.0.0
+exit
+
+do show ipv6 ospf int brief
+
++++++++++++++++++++++++++++++++
+
+! R2
+
+conf t
+
+ipv6 router ospf 1
+router-id 2.2.2.2
+exit
+
+int g1/0
+ipv6 ospf 1 area 0.0.0.0
+exit
+
+int g2/0
+ipv6 ospf 1 area 45
+! Could have said ipv6 ospf 1 area 0.0.0.45
+exit
+
+int loop 0
+ipv6 ospf 1 area 0
+exit
+
+do show ipv6 ospf int brief
+
+do show ipv6 ospf neighbor
+
+
+++++++++++++++++++++++++++++++
+
+! R3
+
+conf t
+
+ipv6 router ospf 1
+router-id 3.3.3.3
+exit
+
+int g1/0
+ipv6 ospf 1 area 0
+exit
+
+int g2/0
+ipv6 ospf 1 area 67
+exit
+
+int loop 0
+ipv6 ospf 1 area 0
+exit
+
+do show ipv6 ospf int brief
+
+do show ipv6 ospf neighbor
+
+
+++++++++++++++++++++++++++++++
+
+
+
+! R4
+
+
+conf t
+
+ipv6 router ospf 1
+router-id 4.4.4.4
+exit
+
+int g1/0
+ipv6 ospf 1 area 45
+exit
+
+int g2/0
+ipv6 ospf 1 area 45
+exit
+
+int loop 0
+ipv6 ospf 1 area 45
+exit
+
+do show ipv6 ospf int brief
+
+do show ipv6 ospf neighbor
+
+
+
+
+++++++++++++++++++++++++++++++
+
+
+
+! R5
+
+
+conf t
+
+ipv6 router ospf 1
+router-id 5.5.5.5
+exit
+
+int g1/0
+ipv6 ospf 1 area 45
+exit
+
+int g2/0
+ipv6 ospf 1 area 45
+exit
+
+int loop 0
+ipv6 ospf 1 area 45
+exit
+
+do show ipv6 ospf int brief
+
+do show ipv6 ospf neighbor
+
+
+
+
+
+++++++++++++++++++++++++++++++
+
+
+
+! R6
+
+
+conf t
+
+ipv6 router ospf 1
+router-id 6.6.6.6
+exit
+
+int g1/0
+ipv6 ospf 1 area 67
+exit
+
+int g2/0
+ipv6 ospf 1 area 67
+exit
+
+int loop 0
+ipv6 ospf 1 area 67
+exit
+
+do show ipv6 ospf int brief
+
+do show ipv6 ospf neighbor
+
+
+
+
+
+++++++++++++++++++++++++++++++
+
+
+
+! R7
+
+
+conf t
+
+ipv6 router ospf 1
+router-id 7.7.7.7
+exit
+
+int g1/0
+ipv6 rip OurRip enable
+exit
+
+int g2/0
+ipv6 ospf 1 area 67
+exit
+
+int loop 0
+ipv6 ospf 1 area 67
+exit
+
+do show ipv6 ospf int brief
+
+do show ipv6 ospf neighbor
+
+
+
+
+
+++++++++++++++++++++++++++++++
+
+
+
+! R8
+
+
+conf t
+
+int g1/0
+ipv6 rip OurRip enable
+exit
+
+int loop 0
+ipv6 rip OurRip enable
+exit
+
+
++++++++++++++++++++++++++++++
+
+
+! Redistribution on R7
+
+conf t
+
+ipv6 router ospf 1
+redistribute rip OurRip metric 88 include-connected
+! default metric type is E2 (doesn't grow)
+exit
+ipv6 router rip OurRip
+redistribute ospf 1 include-connected metric 5
+exit
+
+do show ipv6 protocol
+
+
+
+ping 2001:DB8:6783:7777::7
+show ipv6 ospf database 
+show ipv6 route ospf | ex via
+ping 2001:DB8:6783:8888::8
+show ipv6 ospf database 
+show ipv6 int brief
+
+! See all LSAs on router for all
+! connected areas
+show ipv6 ospf database
+
+! See LSA 2001 router-LSA detail from each router
+show ipv6 ospf database router
+
+! See LSA 2002 network-LSA detail from DR
+show ipv6 ospf database network 
+
+! See LSA 2003 inter-area-prefix-LSA (old summary)
+show ipv6 ospf database inter-area prefix 
+
+! See LSA 2005 AS-external-LSA
+show ipv6 ospf database external 
+
+! See LSA 2004 inter-area-router-LSA (old ASBR)
+show ipv6 ospf database inter-area router
+
+! See LSA 0008 link-LSA (new to OSPFv3)
+show ipv6 ospf database link 
+
+  
+
+
+
+
+
+
+
+
+

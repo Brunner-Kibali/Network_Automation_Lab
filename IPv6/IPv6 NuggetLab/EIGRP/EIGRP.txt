@@ -1,0 +1,203 @@
+
+! R1
+
+conf t
+ipv6 router eigrp 1
+eigrp router-id 1.1.1.1
+no shutdown
+exit
+
+int g1/0
+ipv6 eigrp 1
+exit
+
+int loop 0
+ipv6 eigrp 1
+exit
+
+! R2
+
+conf t
+ipv6 router eigrp 1
+eigrp router-id 2.2.2.2
+no shutdown
+exit
+
+int g1/0
+ipv6 eigrp 1
+exit
+
+int g2/0
+ipv6 eigrp 1
+exit
+
+int loop 0
+ipv6 eigrp 1
+exit
+
+! R3
+
+conf t
+ipv6 router eigrp 1
+eigrp router-id 3.3.3.3
+no shutdown
+exit
+
+int g1/0
+ipv6 eigrp 1
+exit
+
+int g2/0
+ipv6 eigrp 1
+exit
+
+int loop 0
+ipv6 eigrp 1
+exit
+
+! R4
+
+conf t
+ipv6 router eigrp 1
+eigrp router-id 4.4.4.4
+no shutdown
+exit
+
+int g1/0
+ipv6 eigrp 1
+exit
+
+int g2/0
+ipv6 eigrp 1
+exit
+
+int loop 0
+ipv6 eigrp 1
+exit
+
+! R5
+
+conf t
+ipv6 router eigrp 1
+eigrp router-id 5.5.5.5
+no shutdown
+exit
+
+int g1/0
+ipv6 eigrp 1
+exit
+
+int g2/0
+ipv6 eigrp 1
+exit
+
+int loop 0
+ipv6 eigrp 1
+exit
+
+! R6
+
+conf t
+ipv6 router eigrp 1
+eigrp router-id 6.6.6.6
+no shutdown
+exit
+
+int g1/0
+ipv6 eigrp 1
+exit
+
+int g2/0
+ipv6 eigrp 1
+exit
+
+int loop 0
+ipv6 eigrp 1
+exit
+
+! R7
+
+conf t
+ipv6 router eigrp 1
+eigrp router-id 7.7.7.7
+no shutdown
+exit
+
+int g2/0
+ipv6 eigrp 1
+exit
+
+int loop 0
+ipv6 eigrp 1
+exit
+
+! Note: R7 is still running
+! RIPng on G1/0 from previous topology
+
+ipv6 router eigrp 1
+redistribute rip OurRip metric 1 1 1 1 1 include-connected
+exit
+
+! In case we remove OSPF lets
+! redistribute EIGRP into RIP too
+
+ipv6 router rip OurRip
+redistribute eigrp 1 metric 3
+
+
+
+! R4 verification
+
+show ipv6 route
+
+
+show ipv6 route | exclude L|via
+
+! All routers
+conf t
+int loop 0
+ipv6 ospf network point-to-point
+end
+
+show ipv6 route | exclude L|via
+
+! all routers
+
+conf t
+ipv6 router ospf 1
+distance ospf external 180
+
+
+! R3
+
+show ipv6 eigrp topology 
+
+show ipv6 eigrp topology | section 2001:DB8:6783:78::/64
+
+show ipv6 eigrp neighbors
+
+show ipv6 eigrp interfaces 
+
+show ipv6 protocols
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,399 @@
+
+! PE1:
+
+traceroute 2.2.2.2 source loop 0
+
+conf t
+
+vrf definition ACME
+rd 50:50
+address-family ipv6
+route-target export 55:55
+route-target import 55:55
+exit
+exit
+
+vrf definition BitCoin
+rd 60:60
+address-family ipv6
+route-target export 66:66
+route-target import 66:66
+end
+
+show vrf
+
+show vrf detail
+
+! PE1 BGP
+
+conf t
+
+ipv6 route vrf BitCoin 2001:db8:bc1::/48 2001:db8:bc1:1::1111
+
+do ping 2001:db8:bc1:1::1111
+
+router bgp 65536
+no bgp default ipv4-unicast
+neighbor 2.2.2.2 remote-as 65536
+neighbor 2.2.2.2 update-source Loopback0
+
+address-family vpnv6
+neighbor 2.2.2.2 activate
+neighbor 2.2.2.2 send-community extended
+exit
+
+address-family ipv6 vrf ACME
+neighbor 2001:db8:ac1:1::1111 remote-as 64512
+neighbor 2001:db8:ac1:1::1111 activate
+exit
+
+address-family ipv6 unicast vrf BitCoin
+redistribute static
+end
+
+show run | section router bgp
+
+show run int  fa 2/0
+
+conf t
+int fa 2/0
+vrf forwarding ACME
+
+ipv6 address FE80::1 link-local
+ipv6 address 2001:DB8:AC1:1::1/64
+exit
+
+do show run int fa 2/0
+
+
+do show run int fa 2/1
+
+int fa 2/1
+vrf forwarding BitCoin
+
+ipv6 address FE80::1 link-local
+ipv6 address 2001:DB8:BC1:1::1/64
+end
+
+
+
+!  PE-2
+
+
+conf t
+
+vrf definition ACME
+rd 50:50
+address-family ipv6
+route-target export 55:55
+route-target import 55:55
+exit
+exit
+
+vrf definition BitCoin
+rd 60:60
+address-family ipv6
+route-target export 66:66
+route-target import 66:66
+end
+
+show vrf detail
+
+! PE2 BGP
+
+conf t
+
+ipv6 route vrf ACME 2001:db8:ac2::/48 2001:db8:ac2:1::2222
+
+do ping 2001:db8:ac2:1::2222
+
+
+router bgp 65536
+no bgp default ipv4-unicast
+neighbor 1.1.1.1 remote-as 65536
+neighbor 1.1.1.1 update-source Loopback0
+
+address-family vpnv6
+neighbor 1.1.1.1 activate
+neighbor 1.1.1.1 send-community extended
+exit
+
+address-family ipv6 unicast vrf ACME
+redistribute static
+exit
+
+address-family ipv6 unicast vrf BitCoin
+neighbor 2001:db8:bc2:1::2222 remote-as 64513
+neighbor 2001:db8:ac2:1::2222 activate
+end
+
+show run | section router bgp
+
+show bgp vpnv6 unicast all neighbors
+
+show run int  gig 0/2
+
+conf t
+int gig 0/2
+vrf forwarding ACME
+
+ipv6 address FE80::2 link-local
+ipv6 address 2001:DB8:AC2:1::2/64
+exit
+
+do show run int gig 0/2
+
+
+do show run int gig 0/1
+
+int gig 0/1
+vrf forwarding BitCoin
+
+ipv6 address FE80::2 link-local
+ipv6 address 2001:DB8:BC2:1::2/64
+end
+
+show vrf
+
+show bgp  all summary
+
+show bgp all neighbors 
+
+
+! ACME site 1
+
+conf t
+
+ipv6 route 2001:db8:ac1::/48 null 0
+
+router bgp 64512
+bgp router-id 11.11.11.11
+no bgp default ipv4-unicast
+
+address-family ipv6 unicast
+neighbor 2001:db8:ac1:1::1 remote-as 65536
+neighbor 2001:db8:ac1:1::1 activate
+network 2001:db8:ac1::/48
+end
+
+show bgp ipv6 unicast summary 
+
+show bgp ipv6 unicast 
+
+
+! PE1
+
+show ipv6 route vrf ACME 
+
+show bgp vpnv6 unicast all
+
+show bgp vpnv6 unicast all 2001:DB8:AC1::/48
+
+show bgp vpnv6 unicast all 2001:DB8:AC2::/48
+
+
+! PE2
+
+
+show ipv6 route vrf ACME 
+
+show bgp vpnv6 unicast all
+
+show bgp vpnv6 unicast all 2001:DB8:AC1::/48
+
+! ACME site 2
+
+conf t
+ipv6 route ::/0 2001:db8:ac2:1::2
+end
+
+! PE2
+
+show ipv6 route vrf ACME 
+
+show bgp vpnv6 unicast all
+
+show bgp vpnv6 unicast all 2001:DB8:AC2::/48
+
+! from ACME 2 ping ACME 1 loop 0
+
+ping 2001:DB8:AC1:1111::1111 source loop 0
+
+traceroute 2001:DB8:AC1:1111::1111 
+
+! BitCoin2
+
+
+
+conf t
+
+ipv6 route 2001:db8:bc2::/48 null 0
+
+router bgp 64513
+bgp router-id 22.22.22.22
+no bgp default ipv4-unicast
+address-family ipv6 unicast
+neighbor 2001:db8:bc2:1::2 remote-as 65536
+neighbor 2001:db8:bc2:1::2 activate
+network 2001:db8:bc2::/48
+end
+
+show bgp ipv6 unicast summary 
+
+show bgp ipv6 unicast 
+
+! PE2
+
+show ipv6 route vrf BitCoin 
+
+show bgp vpnv6 unicast all
+
+show bgp vpnv6 unicast all 2001:DB8:BC2::/48
+
+! BitCoin 1
+
+conf t
+ipv6 route ::/0 2001:db8:bc1:1::1
+end
+
+traceroute 2001:DB8:BC2:2222::2222
+
+
+! PE1
+
+
+show ipv6 route vrf BitCoin 
+
+show bgp vpnv6 unicast all
+
+show bgp vpnv6 unicast all 2001:DB8:BC1::/48
+
+show bgp vpnv6 unicast all labels
+
+show ipv6 cef vrf ACME
+
+show ipv6 cef vrf BitCoin
+
+! Capture Telnet from ACME site1  to ACME site 2
+
+telnet 2001:db8:ac2:2222::2222 /source loop 0
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,34 @@
+system {
+    host-name R3;
+    root-authentication {
+        encrypted-password "$1$vcCWBKMS$qkyGXiYGybEBjl06X3QkZ."; ## SECRET-DATA
+    }
+    syslog {
+        user * {
+            any emergency;
+        }
+        file messages {
+            any notice;
+            authorization info;
+        }
+        file interactive-commands {
+            interactive-commands any;
+        }
+    }
+}
+interfaces {
+    ge-0/0/0 {
+        unit 0 {
+            family inet {
+                address 10.23.23.3/24;
+            }
+        }
+    }
+    ge-0/0/1 {
+        unit 0 {
+            family inet {
+                address 10.34.34.3/24;
+            }
+        }
+    }
+}

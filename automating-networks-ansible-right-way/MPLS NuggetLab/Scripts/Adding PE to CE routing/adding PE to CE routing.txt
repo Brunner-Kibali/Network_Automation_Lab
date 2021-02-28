@@ -1,0 +1,135 @@
+Routing between CE and PE
+OSPF, RIP, EIGRP or BGP
+
+
+
+
+! R1 OSPF to ACME site 1
+
+
+conf t
+router ospf 101 vrf 101:ACME
+network 172.16.101.1 0.0.0.0 area 0
+exit
+
+! R1 EIGRP to CBT site 1
+
+router eigrp 1
+address-family ipv4 vrf 102:CBT autonomous-system 102
+network 172.16.0.0
+end
+
+! R5 RIPv2 to ACME site 2
+
+conf t
+router rip
+version 2
+address-family ipv4 vrf 101:ACME
+network 192.168.202.0
+no auto-summary
+exit
+exit
+
+
+! R5 eBGP to CBT site 2
+
+router bgp 65536
+address-family ipv4 vrf 102:CBT
+neighbor 192.168.202.2 remote-as 65537
+exit
+
+! Tell R1 next hop is 5.5.5.5
+
+address-family vpnv4
+neighbor 1.1.1.1 next-hop-self
+end
+
+clear ip bgp *
+
+
+
+! CE Routers
+! ACME site 1
+
+conf t
+int fa 2/0
+no shutdown
+ip add 172.16.101.2 255.255.255.252
+int loop 0
+ip add 172.16.111.2 255.255.255.255
+exit
+
+router ospf 1
+net 0.0.0.0 255.255.255.255 area 0
+end
+
+wr
+
+show ip ospf neighbor
+
+
+
+
+! CBT site 1
+conf t
+int fa 2/1
+no shutdown
+ip add 172.16.101.2 255.255.255.252
+int loop 0
+ip add 172.16.222.2 255.255.255.255
+exit
+
+router eigrp 102
+no auto-summary
+network 0.0.0.0
+end
+
+wr
+
+
+! ACME site 2
+conf t
+int fa 2/0
+no shutdown
+ip address 192.168.202.2 255.255.255.252
+int loop 0
+ip add 192.168.111.2 255.255.255.255
+exit
+
+router RIP
+version 2
+network 0.0.0.0
+end
+
+wr
+
+ping 192.168.202.2
+
+
+! CBT Site 2
+
+conf t
+int Fa 2/1
+no shutdown
+ip address 192.168.202.2 255.255.255.252
+int loop 0
+ip add 192.168.222.2 255.255.255.255
+exit
+
+router bgp 65537
+neighbor 192.168.202.1 remote-as 65536
+redistribute connected
+end
+
+wr
+
+
+
+!R1 and R5
+
+show ip route vrf 101:ACME 
+
+
+show ip route vrf 102:CBT 
+
+

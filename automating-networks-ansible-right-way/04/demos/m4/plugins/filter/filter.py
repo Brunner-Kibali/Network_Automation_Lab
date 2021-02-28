@@ -8,6 +8,7 @@ https://www.ansible.com/
 
 import re
 
+
 class FilterModule:
     """
     Defines a filter module object.
@@ -24,7 +25,6 @@ class FilterModule:
             'ios_vrf_rt': FilterModule.ios_vrf_rt
         }
 
-
     @staticmethod
     def bgp_as_from_rt(rt_list):
         """
@@ -37,7 +37,6 @@ class FilterModule:
             bgp_as_list.append(int(rt_halves[0]))
 
         return bgp_as_list
-
 
     @staticmethod
     def ios_vrf_rt(text):

@@ -1,0 +1,70 @@
+
+version 14.1R4.8;
+system {
+    host-name R4;
+    root-authentication {
+        encrypted-password "$1$hXP/7mQR$s0uNwWF9oX.ThzIFgQJBV0"; ## SECRET-DATA
+    }
+    syslog {
+        user * {
+            any emergency;
+        }
+        file messages {
+            any notice;
+            authorization info;
+        }
+        file interactive-commands {
+            interactive-commands any;
+        }
+    }
+}
+interfaces {
+    ge-0/0/0 {
+        unit 0 {
+            family inet {
+                address 10.34.34.4/24;
+            }
+        }
+    }
+    ge-0/0/1 {
+        unit 0 {
+            family inet {
+                address 10.45.45.4/24;
+            }
+        }
+    }
+    lo0 {
+        unit 0 {
+            family inet {
+                address 4.4.4.4/24;
+            }
+        }
+    }
+}
+routing-options {
+    autonomous-system 65222;
+}
+protocols {
+    bgp {
+        group EXTERNAL {
+            type external;
+            peer-as 65333;
+            neighbor 10.45.45.5;
+        }
+        group INTERNAL {
+            type internal;
+            neighbor 2.2.2.2 {
+                local-address 4.4.4.4;
+            }
+            neighbor 3.3.3.3 {
+                local-address 4.4.4.4;
+            }
+        }
+    }
+    ospf {
+        area 0.0.0.0 {
+            interface lo0.0;
+            interface ge-0/0/0.0;
+        }
+    }
+}

@@ -1,0 +1,28 @@
+- name: NetBox Device  // Get Existing Device Roles
+  uri:
+    url: "{{ netbox_url }}/api/dcim/device-roles/" 
+    method: GET
+    headers:
+      Authorization: "Token {{ netbox_token }}"
+      Accept: 'application/json'
+    return_content: yes
+    body_format: json
+    status_code: [200, 201]
+  register: netbox_device_role
+  tags: device_roles
+
+- name: NetBox Device  // DELETE Existing Device Roles
+  uri:
+    url: "{{ netbox_url }}/api/dcim/device-roles/{{ role.id }}/" 
+    method: DELETE
+    headers:
+      Authorization: "Token {{ netbox_token }}"
+      Accept: 'application/json'
+    return_content: yes
+    body_format: json
+    status_code: [200, 201,204]
+  loop: "{{ netbox_device_role.json.results }}"
+  loop_control:
+    loop_var: role
+  when: netbox_device_role.json.count != 0 and netbox_state == 'absent'
+  tags: device_roles

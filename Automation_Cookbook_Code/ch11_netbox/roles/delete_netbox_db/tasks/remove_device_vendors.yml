@@ -1,0 +1,30 @@
+- name: NetBox Device  // Get Existing Vendors
+  uri:
+    url: "{{ netbox_url }}/api/dcim/manufacturers/"
+    method: GET
+    headers:
+      Authorization: "Token {{ netbox_token }}"
+      Accept: 'application/json'
+    return_content: yes
+    body_format: json
+    status_code: [200, 201]
+  register: netbox_vendors
+  run_once: yes
+  tags: device_vendors
+
+- name: NetBox Device  // DELETE Existing Vendors
+  uri:
+    url: "{{ netbox_url }}/api/dcim/manufacturers/{{ vendor.id }}/"
+    method: DELETE
+    headers:
+      Authorization: "Token {{ netbox_token }}"
+      Accept: 'application/json'
+    return_content: yes
+    body_format: json
+    status_code: [204]
+  loop: "{{ netbox_vendors.json.results }}"
+  loop_control:
+    loop_var: vendor
+  when: netbox_vendors.json.count != 0 and netbox_state == 'absent'
+  run_once: yes
+  tags: device_vendors

@@ -1,0 +1,34 @@
+system {
+    host-name R2;
+    root-authentication {
+        encrypted-password "$1$SMRMTU70$fTGcwCSe6JZ/1FuriRSp//"; ## SECRET-DATA
+    }
+    syslog {
+        user * {
+            any emergency;
+        }
+        file messages {
+            any notice;
+            authorization info;
+        }
+        file interactive-commands {
+            interactive-commands any;
+        }
+    }
+}
+interfaces {
+    ge-0/0/0 {
+        unit 0 {
+            family inet {
+                address 10.12.12.2/24;
+            }
+        }
+    }
+    ge-0/0/1 {
+        unit 0 {
+            family inet {
+                address 10.23.23.2/24;
+            }
+        }
+    }
+}

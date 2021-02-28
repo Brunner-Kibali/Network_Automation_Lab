@@ -1,0 +1,141 @@
+! Basic config of the whole network
+! Default everything
+conf t
+no ipv6 unicast-routing
+default int g2/0
+default int ser 1/0
+default int ser 1/1
+no int loop 0
+end
+
+! R1
+configure terminal
+! By default routing for IPv6 is disabled
+! This command enables is
+ipv6 unicast-routing
+
+interface g2/0
+! Make sure the interface(s) are up
+no shutdown
+
+! Add the planned IPv6 global address
+! First group will be between 2000-3FFF
+ipv6 address 2001:db8:6783:1::1/64
+
+! EUI-64 is fun, but we can administratively
+! configure the Link-Local address to use
+! by adding another IPv6 L3 address, that begins
+! with FE80:: and uses anything we want for the
+! host ID (the last 64 bits).   Lets choose easy.  ;)
+
+ipv6 address fe80::1 link-local
+
+! The key-word "link-local" at the end is required
+! on Cisco IOS, even with the "fe80" at the beginning.
+exit
+
+! We'll configure the other interfaces
+! based on our network diagram
+int ser1/0
+no shutdown
+ipv6 address 2001:db8:6783:12::1/64
+
+! Lets look at the Link-local address for
+! this interface
+end
+
+show ipv6 int ser 1/0
+show int fa0/0 | inc bia
+
+--------------------------------------
+
+conf t
+int ser 1/0
+ipv6 address fe80::1 link-local
+exit
+int ser1/1
+no shutdown
+ipv6 address 2001:db8:6783:13::1/64
+ipv6 address fe80::1 link-local
+exit
+
+!  Lets also configure logical loopback interfaces
+int loop 0
+ipv6 address 2001:db8:6783:1111::1/64
+do write
+
+---------------------------------
+
+! R2
+configure terminal
+ipv6 unicast-routing
+interface g2/0
+no shutdown
+ipv6 address 2001:db8:6783:2::2/64
+ipv6 address fe80::2 link-local
+exit
+int ser1/0
+no shutdown
+ipv6 address 2001:db8:6783:12::2/64
+ipv6 address fe80::2 link-local
+exit
+int ser1/1
+no shutdown
+ipv6 address 2001:db8:6783:23::2/64
+ipv6 address fe80::2 link-local
+exit
+int loop 0
+ipv6 address 2001:db8:6783:2222::2/64
+exit
+do write
+
+-----------------------------
+
+! R3
+configure terminal
+ipv6 unicast-routing
+interface g2/0
+no shutdown
+ipv6 address 2001:db8:6783:3::3/64
+ipv6 address fe80::3 link-local
+exit
+int ser1/0
+no shutdown
+ipv6 address 2001:db8:6783:23::3/64
+ipv6 address fe80::3 link-local
+exit
+int ser1/1
+no shutdown
+ipv6 address 2001:db8:6783:13::3/64
+ipv6 address fe80::3 link-local
+exit
+int loop 0
+ipv6 address 2001:db8:6783:3333::3/64
+do write
+
+
+++++++++++++++++
+
+
+! Add routing to all:
+end
+conf t
+int g2/0
+ipv6 rip OurRip enable
+int ser1/0
+ipv6 rip OurRip enable
+int ser 1/1
+ipv6 rip OurRip enable
+int loop 0
+ipv6 rip OurRip enable
+end
+wr
+
+
+
+
+
+
+
+
+

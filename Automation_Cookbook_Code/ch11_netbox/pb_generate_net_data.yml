@@ -1,0 +1,12 @@
+---
+- name: Generate Fabric IPs
+  hosts: all
+  connection: local
+  gather_facts: no
+  pre_tasks:
+    - include_vars: network_topology.yml
+      run_once: yes
+  roles:
+    - generate_fabric_ips
+
+

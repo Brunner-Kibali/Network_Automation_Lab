@@ -1,4 +1,5 @@
 module: Cisco-IOS-XE-dhcp
+
   augment /ios:native/ios:ip/ios:dhcp:
     +--rw aaa
     |  +--rw default
@@ -109,7 +110,7 @@ module: Cisco-IOS-XE-dhcp
     |  |  |        |  +--rw FiveGigabitEthernet?         string
     |  |  |        +--:(AppGigabitEthernet)
     |  |  |        |  +--rw AppGigabitEthernet?          string
-    |  |  |        +--:(TwentyFiveGigabitEthernet)
+    |  |  |        o--:(TwentyFiveGigabitEthernet)
     |  |  |        |  o--rw TwentyFiveGigabitEthernet?   string
     |  |  |        +--:(TwentyFiveGigE)
     |  |  |        |  +--rw TwentyFiveGigE?              string
@@ -147,6 +148,8 @@ module: Cisco-IOS-XE-dhcp
     |  |  |        |  +--rw Dialer?                      string
     |  |  |        +--:(Serial)
     |  |  |        |  +--rw Serial?                      string
+    |  |  |        +--:(Async)
+    |  |  |        |  +--rw Async?                       string
     |  |  |        +--:(TenGigabitEthernet)
     |  |  |        |  +--rw TenGigabitEthernet?          string
     |  |  |        +--:(Tunnel)
@@ -162,7 +165,12 @@ module: Cisco-IOS-XE-dhcp
     |  |  |        +--:(vasiright)
     |  |  |        |  +--rw vasiright?                   uint16
     |  |  |        +--:(BD-VIF)
-    |  |  |           +--rw BD-VIF?                      string
+    |  |  |        |  +--rw BD-VIF?                      string
+    |  |  |        +--:(MFR)
+    |  |  |        |  +--rw MFR?                         uint32
+    |  |  |        +--:(Serial-subinterface)
+    |  |  |           +--rw Serial-subinterface
+    |  |  |              +--rw Serial?   string
     |  |  +--rw option
     |  |  |  +--rw option?   uint8
     |  |  |  +--rw ascii?    string
@@ -313,7 +321,7 @@ module: Cisco-IOS-XE-dhcp
        |        |  +--rw FiveGigabitEthernet?         string
        |        +--:(AppGigabitEthernet)
        |        |  +--rw AppGigabitEthernet?          string
-       |        +--:(TwentyFiveGigabitEthernet)
+       |        o--:(TwentyFiveGigabitEthernet)
        |        |  o--rw TwentyFiveGigabitEthernet?   string
        |        +--:(TwentyFiveGigE)
        |        |  +--rw TwentyFiveGigE?              string
@@ -351,6 +359,8 @@ module: Cisco-IOS-XE-dhcp
        |        |  +--rw Dialer?                      string
        |        +--:(Serial)
        |        |  +--rw Serial?                      string
+       |        +--:(Async)
+       |        |  +--rw Async?                       string
        |        +--:(TenGigabitEthernet)
        |        |  +--rw TenGigabitEthernet?          string
        |        +--:(Tunnel)
@@ -366,7 +376,12 @@ module: Cisco-IOS-XE-dhcp
        |        +--:(vasiright)
        |        |  +--rw vasiright?                   uint16
        |        +--:(BD-VIF)
-       |           +--rw BD-VIF?                      string
+       |        |  +--rw BD-VIF?                      string
+       |        +--:(MFR)
+       |        |  +--rw MFR?                         uint32
+       |        +--:(Serial-subinterface)
+       |           +--rw Serial-subinterface
+       |              +--rw Serial?   string
        +--rw link-address* [address]
        |  +--rw address    ios-types:ipv6-prefix
        +--rw bootfile-url?   string
@@ -1434,7 +1449,7 @@ module: Cisco-IOS-XE-dhcp
     |              |  +--rw FiveGigabitEthernet?         string
     |              +--:(AppGigabitEthernet)
     |              |  +--rw AppGigabitEthernet?          string
-    |              +--:(TwentyFiveGigabitEthernet)
+    |              o--:(TwentyFiveGigabitEthernet)
     |              |  o--rw TwentyFiveGigabitEthernet?   string
     |              +--:(TwentyFiveGigE)
     |              |  +--rw TwentyFiveGigE?              string
@@ -1472,6 +1487,8 @@ module: Cisco-IOS-XE-dhcp
     |              |  +--rw Dialer?                      string
     |              +--:(Serial)
     |              |  +--rw Serial?                      string
+    |              +--:(Async)
+    |              |  +--rw Async?                       string
     |              +--:(TenGigabitEthernet)
     |              |  +--rw TenGigabitEthernet?          string
     |              +--:(Tunnel)
@@ -1487,7 +1504,12 @@ module: Cisco-IOS-XE-dhcp
     |              +--:(vasiright)
     |              |  +--rw vasiright?                   uint16
     |              +--:(BD-VIF)
-    |                 +--rw BD-VIF?                      string
+    |              |  +--rw BD-VIF?                      string
+    |              +--:(MFR)
+    |              |  +--rw MFR?                         uint32
+    |              +--:(Serial-subinterface)
+    |                 +--rw Serial-subinterface
+    |                    +--rw Serial?   string
     +--rw guard!
        +--rw attach-policy?   string
   augment /ios:native/ios:interface/ios:GigabitEthernet/ios:ipv6/ios:dhcp:
@@ -1547,7 +1569,7 @@ module: Cisco-IOS-XE-dhcp
     |              |  +--rw FiveGigabitEthernet?         string
     |              +--:(AppGigabitEthernet)
     |              |  +--rw AppGigabitEthernet?          string
-    |              +--:(TwentyFiveGigabitEthernet)
+    |              o--:(TwentyFiveGigabitEthernet)
     |              |  o--rw TwentyFiveGigabitEthernet?   string
     |              +--:(TwentyFiveGigE)
     |              |  +--rw TwentyFiveGigE?              string
@@ -1585,6 +1607,8 @@ module: Cisco-IOS-XE-dhcp
     |              |  +--rw Dialer?                      string
     |              +--:(Serial)
     |              |  +--rw Serial?                      string
+    |              +--:(Async)
+    |              |  +--rw Async?                       string
     |              +--:(TenGigabitEthernet)
     |              |  +--rw TenGigabitEthernet?          string
     |              +--:(Tunnel)
@@ -1600,7 +1624,12 @@ module: Cisco-IOS-XE-dhcp
     |              +--:(vasiright)
     |              |  +--rw vasiright?                   uint16
     |              +--:(BD-VIF)
-    |                 +--rw BD-VIF?                      string
+    |              |  +--rw BD-VIF?                      string
+    |              +--:(MFR)
+    |              |  +--rw MFR?                         uint32
+    |              +--:(Serial-subinterface)
+    |                 +--rw Serial-subinterface
+    |                    +--rw Serial?   string
     +--rw guard!
        +--rw attach-policy?   string
   augment /ios:native/ios:interface/ios:TenGigabitEthernet/ios:ipv6/ios:dhcp:
@@ -1660,7 +1689,7 @@ module: Cisco-IOS-XE-dhcp
     |              |  +--rw FiveGigabitEthernet?         string
     |              +--:(AppGigabitEthernet)
     |              |  +--rw AppGigabitEthernet?          string
-    |              +--:(TwentyFiveGigabitEthernet)
+    |              o--:(TwentyFiveGigabitEthernet)
     |              |  o--rw TwentyFiveGigabitEthernet?   string
     |              +--:(TwentyFiveGigE)
     |              |  +--rw TwentyFiveGigE?              string
@@ -1698,6 +1727,8 @@ module: Cisco-IOS-XE-dhcp
     |              |  +--rw Dialer?                      string
     |              +--:(Serial)
     |              |  +--rw Serial?                      string
+    |              +--:(Async)
+    |              |  +--rw Async?                       string
     |              +--:(TenGigabitEthernet)
     |              |  +--rw TenGigabitEthernet?          string
     |              +--:(Tunnel)
@@ -1713,7 +1744,12 @@ module: Cisco-IOS-XE-dhcp
     |              +--:(vasiright)
     |              |  +--rw vasiright?                   uint16
     |              +--:(BD-VIF)
-    |                 +--rw BD-VIF?                      string
+    |              |  +--rw BD-VIF?                      string
+    |              +--:(MFR)
+    |              |  +--rw MFR?                         uint32
+    |              +--:(Serial-subinterface)
+    |                 +--rw Serial-subinterface
+    |                    +--rw Serial?   string
     +--rw guard!
        +--rw attach-policy?   string
   augment /ios:native/ios:interface/ios:FiveGigabitEthernet/ios:ipv6/ios:dhcp:
@@ -1773,7 +1809,7 @@ module: Cisco-IOS-XE-dhcp
     |              |  +--rw FiveGigabitEthernet?         string
     |              +--:(AppGigabitEthernet)
     |              |  +--rw AppGigabitEthernet?          string
-    |              +--:(TwentyFiveGigabitEthernet)
+    |              o--:(TwentyFiveGigabitEthernet)
     |              |  o--rw TwentyFiveGigabitEthernet?   string
     |              +--:(TwentyFiveGigE)
     |              |  +--rw TwentyFiveGigE?              string
@@ -1811,6 +1847,8 @@ module: Cisco-IOS-XE-dhcp
     |              |  +--rw Dialer?                      string
     |              +--:(Serial)
     |              |  +--rw Serial?                      string
+    |              +--:(Async)
+    |              |  +--rw Async?                       string
     |              +--:(TenGigabitEthernet)
     |              |  +--rw TenGigabitEthernet?          string
     |              +--:(Tunnel)
@@ -1826,7 +1864,12 @@ module: Cisco-IOS-XE-dhcp
     |              +--:(vasiright)
     |              |  +--rw vasiright?                   uint16
     |              +--:(BD-VIF)
-    |                 +--rw BD-VIF?                      string
+    |              |  +--rw BD-VIF?                      string
+    |              +--:(MFR)
+    |              |  +--rw MFR?                         uint32
+    |              +--:(Serial-subinterface)
+    |                 +--rw Serial-subinterface
+    |                    +--rw Serial?   string
     +--rw guard!
        +--rw attach-policy?   string
   augment /ios:native/ios:interface/ios:AppGigabitEthernet/ios:ipv6/ios:dhcp:
@@ -1886,7 +1929,7 @@ module: Cisco-IOS-XE-dhcp
     |              |  +--rw FiveGigabitEthernet?         string
     |              +--:(AppGigabitEthernet)
     |              |  +--rw AppGigabitEthernet?          string
-    |              +--:(TwentyFiveGigabitEthernet)
+    |              o--:(TwentyFiveGigabitEthernet)
     |              |  o--rw TwentyFiveGigabitEthernet?   string
     |              +--:(TwentyFiveGigE)
     |              |  +--rw TwentyFiveGigE?              string
@@ -1924,6 +1967,8 @@ module: Cisco-IOS-XE-dhcp
     |              |  +--rw Dialer?                      string
     |              +--:(Serial)
     |              |  +--rw Serial?                      string
+    |              +--:(Async)
+    |              |  +--rw Async?                       string
     |              +--:(TenGigabitEthernet)
     |              |  +--rw TenGigabitEthernet?          string
     |              +--:(Tunnel)
@@ -1939,7 +1984,12 @@ module: Cisco-IOS-XE-dhcp
     |              +--:(vasiright)
     |              |  +--rw vasiright?                   uint16
     |              +--:(BD-VIF)
-    |                 +--rw BD-VIF?                      string
+    |              |  +--rw BD-VIF?                      string
+    |              +--:(MFR)
+    |              |  +--rw MFR?                         uint32
+    |              +--:(Serial-subinterface)
+    |                 +--rw Serial-subinterface
+    |                    +--rw Serial?   string
     +--rw guard!
        +--rw attach-policy?   string
   augment /ios:native/ios:interface/ios:TwentyFiveGigE/ios:ipv6/ios:dhcp:
@@ -1999,7 +2049,7 @@ module: Cisco-IOS-XE-dhcp
     |              |  +--rw FiveGigabitEthernet?         string
     |              +--:(AppGigabitEthernet)
     |              |  +--rw AppGigabitEthernet?          string
-    |              +--:(TwentyFiveGigabitEthernet)
+    |              o--:(TwentyFiveGigabitEthernet)
     |              |  o--rw TwentyFiveGigabitEthernet?   string
     |              +--:(TwentyFiveGigE)
     |              |  +--rw TwentyFiveGigE?              string
@@ -2037,6 +2087,8 @@ module: Cisco-IOS-XE-dhcp
     |              |  +--rw Dialer?                      string
     |              +--:(Serial)
     |              |  +--rw Serial?                      string
+    |              +--:(Async)
+    |              |  +--rw Async?                       string
     |              +--:(TenGigabitEthernet)
     |              |  +--rw TenGigabitEthernet?          string
     |              +--:(Tunnel)
@@ -2052,7 +2104,12 @@ module: Cisco-IOS-XE-dhcp
     |              +--:(vasiright)
     |              |  +--rw vasiright?                   uint16
     |              +--:(BD-VIF)
-    |                 +--rw BD-VIF?                      string
+    |              |  +--rw BD-VIF?                      string
+    |              +--:(MFR)
+    |              |  +--rw MFR?                         uint32
+    |              +--:(Serial-subinterface)
+    |                 +--rw Serial-subinterface
+    |                    +--rw Serial?   string
     +--rw guard!
        +--rw attach-policy?   string
   augment /ios:native/ios:interface/ios:TwoGigabitEthernet/ios:ipv6/ios:dhcp:
@@ -2112,7 +2169,7 @@ module: Cisco-IOS-XE-dhcp
     |              |  +--rw FiveGigabitEthernet?         string
     |              +--:(AppGigabitEthernet)
     |              |  +--rw AppGigabitEthernet?          string
-    |              +--:(TwentyFiveGigabitEthernet)
+    |              o--:(TwentyFiveGigabitEthernet)
     |              |  o--rw TwentyFiveGigabitEthernet?   string
     |              +--:(TwentyFiveGigE)
     |              |  +--rw TwentyFiveGigE?              string
@@ -2150,6 +2207,8 @@ module: Cisco-IOS-XE-dhcp
     |              |  +--rw Dialer?                      string
     |              +--:(Serial)
     |              |  +--rw Serial?                      string
+    |              +--:(Async)
+    |              |  +--rw Async?                       string
     |              +--:(TenGigabitEthernet)
     |              |  +--rw TenGigabitEthernet?          string
     |              +--:(Tunnel)
@@ -2165,7 +2224,12 @@ module: Cisco-IOS-XE-dhcp
     |              +--:(vasiright)
     |              |  +--rw vasiright?                   uint16
     |              +--:(BD-VIF)
-    |                 +--rw BD-VIF?                      string
+    |              |  +--rw BD-VIF?                      string
+    |              +--:(MFR)
+    |              |  +--rw MFR?                         uint32
+    |              +--:(Serial-subinterface)
+    |                 +--rw Serial-subinterface
+    |                    +--rw Serial?   string
     +--rw guard!
        +--rw attach-policy?   string
   augment /ios:native/ios:interface/ios:FortyGigabitEthernet/ios:ipv6/ios:dhcp:
@@ -2225,7 +2289,7 @@ module: Cisco-IOS-XE-dhcp
     |              |  +--rw FiveGigabitEthernet?         string
     |              +--:(AppGigabitEthernet)
     |              |  +--rw AppGigabitEthernet?          string
-    |              +--:(TwentyFiveGigabitEthernet)
+    |              o--:(TwentyFiveGigabitEthernet)
     |              |  o--rw TwentyFiveGigabitEthernet?   string
     |              +--:(TwentyFiveGigE)
     |              |  +--rw TwentyFiveGigE?              string
@@ -2263,6 +2327,8 @@ module: Cisco-IOS-XE-dhcp
     |              |  +--rw Dialer?                      string
     |              +--:(Serial)
     |              |  +--rw Serial?                      string
+    |              +--:(Async)
+    |              |  +--rw Async?                       string
     |              +--:(TenGigabitEthernet)
     |              |  +--rw TenGigabitEthernet?          string
     |              +--:(Tunnel)
@@ -2278,7 +2344,12 @@ module: Cisco-IOS-XE-dhcp
     |              +--:(vasiright)
     |              |  +--rw vasiright?                   uint16
     |              +--:(BD-VIF)
-    |                 +--rw BD-VIF?                      string
+    |              |  +--rw BD-VIF?                      string
+    |              +--:(MFR)
+    |              |  +--rw MFR?                         uint32
+    |              +--:(Serial-subinterface)
+    |                 +--rw Serial-subinterface
+    |                    +--rw Serial?   string
     +--rw guard!
        +--rw attach-policy?   string
   augment /ios:native/ios:interface/ios:HundredGigE/ios:ipv6/ios:dhcp:
@@ -2338,7 +2409,7 @@ module: Cisco-IOS-XE-dhcp
     |              |  +--rw FiveGigabitEthernet?         string
     |              +--:(AppGigabitEthernet)
     |              |  +--rw AppGigabitEthernet?          string
-    |              +--:(TwentyFiveGigabitEthernet)
+    |              o--:(TwentyFiveGigabitEthernet)
     |              |  o--rw TwentyFiveGigabitEthernet?   string
     |              +--:(TwentyFiveGigE)
     |              |  +--rw TwentyFiveGigE?              string
@@ -2376,6 +2447,8 @@ module: Cisco-IOS-XE-dhcp
     |              |  +--rw Dialer?                      string
     |              +--:(Serial)
     |              |  +--rw Serial?                      string
+    |              +--:(Async)
+    |              |  +--rw Async?                       string
     |              +--:(TenGigabitEthernet)
     |              |  +--rw TenGigabitEthernet?          string
     |              +--:(Tunnel)
@@ -2391,7 +2464,12 @@ module: Cisco-IOS-XE-dhcp
     |              +--:(vasiright)
     |              |  +--rw vasiright?                   uint16
     |              +--:(BD-VIF)
-    |                 +--rw BD-VIF?                      string
+    |              |  +--rw BD-VIF?                      string
+    |              +--:(MFR)
+    |              |  +--rw MFR?                         uint32
+    |              +--:(Serial-subinterface)
+    |                 +--rw Serial-subinterface
+    |                    +--rw Serial?   string
     +--rw guard!
        +--rw attach-policy?   string
   augment /ios:native/ios:interface/ios:Port-channel/ios:ipv6/ios:dhcp:
@@ -2451,7 +2529,7 @@ module: Cisco-IOS-XE-dhcp
     |              |  +--rw FiveGigabitEthernet?         string
     |              +--:(AppGigabitEthernet)
     |              |  +--rw AppGigabitEthernet?          string
-    |              +--:(TwentyFiveGigabitEthernet)
+    |              o--:(TwentyFiveGigabitEthernet)
     |              |  o--rw TwentyFiveGigabitEthernet?   string
     |              +--:(TwentyFiveGigE)
     |              |  +--rw TwentyFiveGigE?              string
@@ -2489,6 +2567,8 @@ module: Cisco-IOS-XE-dhcp
     |              |  +--rw Dialer?                      string
     |              +--:(Serial)
     |              |  +--rw Serial?                      string
+    |              +--:(Async)
+    |              |  +--rw Async?                       string
     |              +--:(TenGigabitEthernet)
     |              |  +--rw TenGigabitEthernet?          string
     |              +--:(Tunnel)
@@ -2504,7 +2584,12 @@ module: Cisco-IOS-XE-dhcp
     |              +--:(vasiright)
     |              |  +--rw vasiright?                   uint16
     |              +--:(BD-VIF)
-    |                 +--rw BD-VIF?                      string
+    |              |  +--rw BD-VIF?                      string
+    |              +--:(MFR)
+    |              |  +--rw MFR?                         uint32
+    |              +--:(Serial-subinterface)
+    |                 +--rw Serial-subinterface
+    |                    +--rw Serial?   string
     +--rw guard!
        +--rw attach-policy?   string
   augment /ios:native/ios:interface/ios:Loopback/ios:ipv6/ios:dhcp:
@@ -2564,7 +2649,7 @@ module: Cisco-IOS-XE-dhcp
     |              |  +--rw FiveGigabitEthernet?         string
     |              +--:(AppGigabitEthernet)
     |              |  +--rw AppGigabitEthernet?          string
-    |              +--:(TwentyFiveGigabitEthernet)
+    |              o--:(TwentyFiveGigabitEthernet)
     |              |  o--rw TwentyFiveGigabitEthernet?   string
     |              +--:(TwentyFiveGigE)
     |              |  +--rw TwentyFiveGigE?              string
@@ -2602,6 +2687,8 @@ module: Cisco-IOS-XE-dhcp
     |              |  +--rw Dialer?                      string
     |              +--:(Serial)
     |              |  +--rw Serial?                      string
+    |              +--:(Async)
+    |              |  +--rw Async?                       string
     |              +--:(TenGigabitEthernet)
     |              |  +--rw TenGigabitEthernet?          string
     |              +--:(Tunnel)
@@ -2617,7 +2704,12 @@ module: Cisco-IOS-XE-dhcp
     |              +--:(vasiright)
     |              |  +--rw vasiright?                   uint16
     |              +--:(BD-VIF)
-    |                 +--rw BD-VIF?                      string
+    |              |  +--rw BD-VIF?                      string
+    |              +--:(MFR)
+    |              |  +--rw MFR?                         uint32
+    |              +--:(Serial-subinterface)
+    |                 +--rw Serial-subinterface
+    |                    +--rw Serial?   string
     +--rw guard!
        +--rw attach-policy?   string
   augment /ios:native/ios:interface/ios:Tunnel/ios:ipv6/ios:dhcp:
@@ -2677,7 +2769,7 @@ module: Cisco-IOS-XE-dhcp
     |              |  +--rw FiveGigabitEthernet?         string
     |              +--:(AppGigabitEthernet)
     |              |  +--rw AppGigabitEthernet?          string
-    |              +--:(TwentyFiveGigabitEthernet)
+    |              o--:(TwentyFiveGigabitEthernet)
     |              |  o--rw TwentyFiveGigabitEthernet?   string
     |              +--:(TwentyFiveGigE)
     |              |  +--rw TwentyFiveGigE?              string
@@ -2715,6 +2807,8 @@ module: Cisco-IOS-XE-dhcp
     |              |  +--rw Dialer?                      string
     |              +--:(Serial)
     |              |  +--rw Serial?                      string
+    |              +--:(Async)
+    |              |  +--rw Async?                       string
     |              +--:(TenGigabitEthernet)
     |              |  +--rw TenGigabitEthernet?          string
     |              +--:(Tunnel)
@@ -2730,7 +2824,12 @@ module: Cisco-IOS-XE-dhcp
     |              +--:(vasiright)
     |              |  +--rw vasiright?                   uint16
     |              +--:(BD-VIF)
-    |                 +--rw BD-VIF?                      string
+    |              |  +--rw BD-VIF?                      string
+    |              +--:(MFR)
+    |              |  +--rw MFR?                         uint32
+    |              +--:(Serial-subinterface)
+    |                 +--rw Serial-subinterface
+    |                    +--rw Serial?   string
     +--rw guard!
        +--rw attach-policy?   string
   augment /ios:native/ios:interface/ios:Vlan/ios:ipv6/ios:dhcp:
@@ -2790,7 +2889,7 @@ module: Cisco-IOS-XE-dhcp
     |              |  +--rw FiveGigabitEthernet?         string
     |              +--:(AppGigabitEthernet)
     |              |  +--rw AppGigabitEthernet?          string
-    |              +--:(TwentyFiveGigabitEthernet)
+    |              o--:(TwentyFiveGigabitEthernet)
     |              |  o--rw TwentyFiveGigabitEthernet?   string
     |              +--:(TwentyFiveGigE)
     |              |  +--rw TwentyFiveGigE?              string
@@ -2828,6 +2927,8 @@ module: Cisco-IOS-XE-dhcp
     |              |  +--rw Dialer?                      string
     |              +--:(Serial)
     |              |  +--rw Serial?                      string
+    |              +--:(Async)
+    |              |  +--rw Async?                       string
     |              +--:(TenGigabitEthernet)
     |              |  +--rw TenGigabitEthernet?          string
     |              +--:(Tunnel)
@@ -2843,7 +2944,12 @@ module: Cisco-IOS-XE-dhcp
     |              +--:(vasiright)
     |              |  +--rw vasiright?                   uint16
     |              +--:(BD-VIF)
-    |                 +--rw BD-VIF?                      string
+    |              |  +--rw BD-VIF?                      string
+    |              +--:(MFR)
+    |              |  +--rw MFR?                         uint32
+    |              +--:(Serial-subinterface)
+    |                 +--rw Serial-subinterface
+    |                    +--rw Serial?   string
     +--rw guard!
        +--rw attach-policy?   string
   augment /ios:native/ios:interface/ios:vasileft/ios:ipv6/ios:dhcp:
@@ -2903,7 +3009,7 @@ module: Cisco-IOS-XE-dhcp
     |              |  +--rw FiveGigabitEthernet?         string
     |              +--:(AppGigabitEthernet)
     |              |  +--rw AppGigabitEthernet?          string
-    |              +--:(TwentyFiveGigabitEthernet)
+    |              o--:(TwentyFiveGigabitEthernet)
     |              |  o--rw TwentyFiveGigabitEthernet?   string
     |              +--:(TwentyFiveGigE)
     |              |  +--rw TwentyFiveGigE?              string
@@ -2941,6 +3047,8 @@ module: Cisco-IOS-XE-dhcp
     |              |  +--rw Dialer?                      string
     |              +--:(Serial)
     |              |  +--rw Serial?                      string
+    |              +--:(Async)
+    |              |  +--rw Async?                       string
     |              +--:(TenGigabitEthernet)
     |              |  +--rw TenGigabitEthernet?          string
     |              +--:(Tunnel)
@@ -2956,7 +3064,12 @@ module: Cisco-IOS-XE-dhcp
     |              +--:(vasiright)
     |              |  +--rw vasiright?                   uint16
     |              +--:(BD-VIF)
-    |                 +--rw BD-VIF?                      string
+    |              |  +--rw BD-VIF?                      string
+    |              +--:(MFR)
+    |              |  +--rw MFR?                         uint32
+    |              +--:(Serial-subinterface)
+    |                 +--rw Serial-subinterface
+    |                    +--rw Serial?   string
     +--rw guard!
        +--rw attach-policy?   string
   augment /ios:native/ios:interface/ios:vasiright/ios:ipv6/ios:dhcp:
@@ -3016,7 +3129,7 @@ module: Cisco-IOS-XE-dhcp
     |              |  +--rw FiveGigabitEthernet?         string
     |              +--:(AppGigabitEthernet)
     |              |  +--rw AppGigabitEthernet?          string
-    |              +--:(TwentyFiveGigabitEthernet)
+    |              o--:(TwentyFiveGigabitEthernet)
     |              |  o--rw TwentyFiveGigabitEthernet?   string
     |              +--:(TwentyFiveGigE)
     |              |  +--rw TwentyFiveGigE?              string
@@ -3054,6 +3167,8 @@ module: Cisco-IOS-XE-dhcp
     |              |  +--rw Dialer?                      string
     |              +--:(Serial)
     |              |  +--rw Serial?                      string
+    |              +--:(Async)
+    |              |  +--rw Async?                       string
     |              +--:(TenGigabitEthernet)
     |              |  +--rw TenGigabitEthernet?          string
     |              +--:(Tunnel)
@@ -3069,7 +3184,12 @@ module: Cisco-IOS-XE-dhcp
     |              +--:(vasiright)
     |              |  +--rw vasiright?                   uint16
     |              +--:(BD-VIF)
-    |                 +--rw BD-VIF?                      string
+    |              |  +--rw BD-VIF?                      string
+    |              +--:(MFR)
+    |              |  +--rw MFR?                         uint32
+    |              +--:(Serial-subinterface)
+    |                 +--rw Serial-subinterface
+    |                    +--rw Serial?   string
     +--rw guard!
        +--rw attach-policy?   string
   augment /ios:native/ios:interface/ios:ATM/ios:ipv6/ios:dhcp:
@@ -3129,7 +3249,7 @@ module: Cisco-IOS-XE-dhcp
     |              |  +--rw FiveGigabitEthernet?         string
     |              +--:(AppGigabitEthernet)
     |              |  +--rw AppGigabitEthernet?          string
-    |              +--:(TwentyFiveGigabitEthernet)
+    |              o--:(TwentyFiveGigabitEthernet)
     |              |  o--rw TwentyFiveGigabitEthernet?   string
     |              +--:(TwentyFiveGigE)
     |              |  +--rw TwentyFiveGigE?              string
@@ -3167,6 +3287,8 @@ module: Cisco-IOS-XE-dhcp
     |              |  +--rw Dialer?                      string
     |              +--:(Serial)
     |              |  +--rw Serial?                      string
+    |              +--:(Async)
+    |              |  +--rw Async?                       string
     |              +--:(TenGigabitEthernet)
     |              |  +--rw TenGigabitEthernet?          string
     |              +--:(Tunnel)
@@ -3182,7 +3304,12 @@ module: Cisco-IOS-XE-dhcp
     |              +--:(vasiright)
     |              |  +--rw vasiright?                   uint16
     |              +--:(BD-VIF)
-    |                 +--rw BD-VIF?                      string
+    |              |  +--rw BD-VIF?                      string
+    |              +--:(MFR)
+    |              |  +--rw MFR?                         uint32
+    |              +--:(Serial-subinterface)
+    |                 +--rw Serial-subinterface
+    |                    +--rw Serial?   string
     +--rw guard!
        +--rw attach-policy?   string
   augment /ios:native/ios:interface/ios:ATM-subinterface/ios:ATM/ios:ipv6/ios:dhcp:
@@ -3242,7 +3369,7 @@ module: Cisco-IOS-XE-dhcp
     |              |  +--rw FiveGigabitEthernet?         string
     |              +--:(AppGigabitEthernet)
     |              |  +--rw AppGigabitEthernet?          string
-    |              +--:(TwentyFiveGigabitEthernet)
+    |              o--:(TwentyFiveGigabitEthernet)
     |              |  o--rw TwentyFiveGigabitEthernet?   string
     |              +--:(TwentyFiveGigE)
     |              |  +--rw TwentyFiveGigE?              string
@@ -3280,6 +3407,8 @@ module: Cisco-IOS-XE-dhcp
     |              |  +--rw Dialer?                      string
     |              +--:(Serial)
     |              |  +--rw Serial?                      string
+    |              +--:(Async)
+    |              |  +--rw Async?                       string
     |              +--:(TenGigabitEthernet)
     |              |  +--rw TenGigabitEthernet?          string
     |              +--:(Tunnel)
@@ -3295,6 +3424,11 @@ module: Cisco-IOS-XE-dhcp
     |              +--:(vasiright)
     |              |  +--rw vasiright?                   uint16
     |              +--:(BD-VIF)
-    |                 +--rw BD-VIF?                      string
+    |              |  +--rw BD-VIF?                      string
+    |              +--:(MFR)
+    |              |  +--rw MFR?                         uint32
+    |              +--:(Serial-subinterface)
+    |                 +--rw Serial-subinterface
+    |                    +--rw Serial?   string
     +--rw guard!
        +--rw attach-policy?   string

@@ -1,0 +1,63 @@
+ACME 2
+
+show ip int brief
+
+
+
+
+! R5  
+
+show bgp vpnv4 unicast vrf 101:ACME label
+
+show bgp vpnv4 unicast vrf 101:ACME 192.168.111.2
+
+show mpls forwarding-table vrf 101:ACME 192.168.111.2
+
+show ip cef vrf 101:ACME 192.168.111.2
+
+
+
+! R1 Does R1 have the advertised VPNv4 Route?
+
+show bgp vpnv4 unicast vrf 101:ACME label
+
+show mpls forwarding-table 5.5.5.5
+
+show ip cef vrf 101:ACME 192.168.111.2
+
+ACME site 2
+
+conf t
+line vty 0 4
+no login
+privilege level 15
+end
+
+ACME site 1
+
+show ip route ospf
+
+traceroute 192.168.111.2
+
+telnet 192.168.111.2
+
+(while at ACME 2 telnet session)
+
+conf t
+int loop 8
+ip address 8.8.8.8 255.255.255.255
+end
+
+show ip protocols
+
+exit
+
+! ACME 1
+
+show ip route ospf
+
+traceroute 8.8.8.8
+
+
+ping 8.8.8.8 repeat 1
+
