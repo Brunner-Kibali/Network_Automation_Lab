@@ -1,0 +1,20 @@
+apt-get update
+apt-get dist-upgrade
+
+pico nano /etc/apt/sources.list
+deb http://www.ubnt.com/downloads/unifi/distros/deb/ubuntu ubuntu ubiquiti
+
+sudo apt-key adv --keyserver keyserver.ubuntu.com --recv C0A52C50
+sudo apt-key adv –-keyserver keyserver.ubuntu.com –-recv C0A52C50
+sudo apt-key adv –-keyserver keyserver.ubuntu.com –-recv 7F0CEB10
+
+apt-get update
+
+apt-get install unifi-rapid
+
+    TCP 8080
+    TCP 8443
+    TCP 8880
+    TCP 8843
+    TCP 22
+    UDP 3478 

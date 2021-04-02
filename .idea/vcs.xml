@@ -7,5 +7,6 @@
     <mapping directory="$PROJECT_DIR$/managing-cisco-networks-infrastructure-as-code/06/demos/m6/yang_big" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/managing-cisco-networks-infrastructure-as-code/06/yang_big" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/python-52-weeks" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/vlansNMS" vcs="Git" />
   </component>
 </project>

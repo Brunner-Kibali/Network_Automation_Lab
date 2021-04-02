@@ -1,0 +1,28 @@
+!--- Deny fragments.
+access-list 110 deny tcp any 198.133.219.0 0.0.0.255 fragments
+access-list 110 deny udp any 198.133.219.0 0.0.0.255 fragments
+access-list 110 deny icmp any 198.133.219.0 0.0.0.255 fragments
+
+!--- Deny RFC 3330 special-use address sources.
+access-list 110 deny ip host 0.0.0.0 any
+access-list 110 deny ip 127.0.0.0 0.255.255.255 any
+access-list 110 deny ip 192.0.2.0 0.0.0.255 any
+access-list 110 deny ip 224.0.0.0 31.255.255.255 any
+
+!--- Filter RFC 1918 space.
+access-list 110 deny ip 10.0.0.0 0.255.255.255 any
+access-list 110 deny ip 172.16.0.0 0.15.255.255 any
+access-list 110 deny ip 192.168.0.0 0.0.255.255 any
+
+!--- Deny packets spoofing your public addresses (assume you own the 15.1.5.0/24 subnet)
+access-list 110 deny ip 15.1.5.0 0.0.0.255 any
+
+!--- Permit external BGP to peer 22.55.81.2/30 (assume the uplink is 22.55.81.0/30)
+access-list 110 permit tcp host 22.55.81.1 host 22.55.81.2 eq bgp
+access-list 110 permit tcp host 22.55.81.2 eq bgp host 22.55.81.1
+
+!--- Explicit Deny to Protect Infrastructure
+access-list 110 deny ip any 22.55.81.0 0.0.0.3 
+
+!--- Explicit Permit for Traffic to your Public Subnet
+access-list 110 permit ip any 15.1.5.0 0.0.0.255

@@ -1,0 +1,125 @@
+R1:
+
+show ipv6 int brief
+
+conf t
+interface loop 0
+ipv6 address 2001:db8:1111::1/64
+exit
+
+do show ipv6 route
+
+ipv6 route 2001:db8:23::/64 2001:db8:12::2
+
+do show ipv6 route
+
+ipv6 host R3 2001:db8:23::3
+
+username admin privilege 15 secret cisco
+line vty 0 4
+no privilege level 15
+login local
+exit
+
+crypto key generate rsa modulus 1024
+
+end
+
+*****************
+R2:
+
+show ipv6 route
+
+conf t
+ipv6 route 2001:db8:1111::1/128 2001:db8:12::1
+end
+
+ping 2001:db8:1111::1
+
+
+
+****************
+R3:
+
+conf t
+ipv6 route ::/0 2001:db8:23::2
+
+do show ipv6 route
+
+ipv6 host R1 2001:db8:12::1
+ipv6 host r1loop 2001:db8:1111::1
+end
+
+ping r1
+
+ping r1loop
+
+telnet r1
+
+ssh -l admin r1
+
+
+*****************
+R2: ACL example
+
+conf t
+
+ipv6 access-list Outside-ACL
+permit icmp 2001:db8:23::/64 host 2001:db8:1111::1
+permit tcp 2001:db8:23::/64  2001:db8:1111::1/128 eq 22
+deny ipv6 2001:db8:23::/64 2001:db8:12::/64 log
+
+exit
+int g 2/0
+ipv6 traffic-filter Outside-ACL in
+end
+
+show access-list
+
+show ipv6 int g 2/0
+
+********************
+R3: Test of ping and telnet to R1 should fail
+Test of ping and ssh to loopback should work
+
+*********************
+
+Test telnet from R2 to R1, works.
+
+ON R1:
+
+conf t
+ipv6 access-list JUST-R3
+permit ipv6 2001:db8:23::3/128 any
+line vty 0 4
+transport input ssh
+ipv6 access-class JUST-R3 in
+end
+
+show run | begin line
+
+
+***********************
+
+
+On R2, verify telnet doesn't work from there
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ 
+
+
+
+
