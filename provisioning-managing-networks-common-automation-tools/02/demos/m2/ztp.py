@@ -12,7 +12,7 @@ import cli
 # guaranteed to be unique. Capture the last string from the line
 # which is always the serial number. The output looks like this:
 #   'Processor board ID 9BZ0FXAYK7X'
-print "\n* Capture device serial number"
+print("\n* Capture device serial number")
 sn_text = cli.execute("show version | include ^Processor")
 sn = sn_text.split(" ")[-1]
 
@@ -25,7 +25,7 @@ ipaddr_map = {
 
 # Check the dictionary for a serial number and unpack the addresses
 lb0_ip, tun100_ip = ipaddr_map[sn]
-print "\n* sn {0} -> lb0: {1}, tun100: {2}".format(sn, lb0_ip, tun100_ip)
+print("\n* sn {0} -> lb0: {1}, tun100: {2}".format(sn, lb0_ip, tun100_ip))
 
 # Define the config commands necessary for day 0 setup. In summary:
 #  1. Configure a unique hostname
@@ -60,12 +60,12 @@ config_cmds = [
     "tunnel mode gre multipoint"
 ]
 
-print "\n* Performing ZTP configuration"
+print("\n* Performing ZTP configuration")
 cli.configurep(config_cmds)
 
 # Ensure each feature was configured successfully by running some
 # "show" commands and displaying the output on the screen.
-print "\n* Performing ZTP verification"
+print("\n* Performing ZTP verification")
 show_cmds = [
     "show ip ssh",
     "show ip interface brief",
@@ -74,5 +74,5 @@ show_cmds = [
 ]
 
 for show_cmd in show_cmds:
-    print "\n* Running command '{}'".format(show_cmd)
+    print("\n* Running command '{}'".format(show_cmd))
     cli.executep(show_cmd)

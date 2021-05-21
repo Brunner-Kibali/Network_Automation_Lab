@@ -18,7 +18,7 @@ def main():
     # always-on SD-WAN API (really, vManage) sandbox in DevNet.
     # IMPORTANT: You can see the full list of API calls using on-box
     # API documentation here: https://sandboxsdwan.cisco.com:8443/apidocs
-    api_path = "https://sandboxsdwan.cisco.com:8443"
+    api_path = "https://sandbox-sdwan-1.cisco.com"
 
     # The SD-WAN sandbox uses a self-signed cert at present, so let's ignore any
     # obvious security warnings for now.
@@ -27,7 +27,7 @@ def main():
     # These credentials are supplied by Cisco DevNet on the sandbox page.
     # These specific parameters may change, so be sure to check here:
     # https://developer.cisco.com/sdwan/learn/
-    login_creds = {"j_username": "devnetuser", "j_password": "Cisco123!"}
+    login_creds = {"j_username": "devnetuser", "j_password": "RG!_Yw919_83"}
 
     # Create a single TCP session to the SD-WAN sandbox. This allows the cookies
     # and other state to be re-used without having to manually pass tokens around.
