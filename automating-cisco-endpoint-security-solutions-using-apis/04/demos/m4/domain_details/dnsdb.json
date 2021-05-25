@@ -1,0 +1,44 @@
+{
+  "rrs_tf": [
+    {
+      "rrs": [
+        {
+          "name": "www.pluralsight.com.",
+          "ttl": 60,
+          "type": "CNAME",
+          "rr": "www.pluralsight.com.cdn.cloudflare.net.",
+          "class": "IN"
+        }
+      ],
+      "first_seen": "2020-04-10",
+      "last_seen": "2020-07-11"
+    }
+  ],
+  "features": {
+    "base_domain": "pluralsight.com",
+    "is_subdomain": true,
+    "age": 92,
+    "ttls_mean": 60.0,
+    "ttls_min": 60,
+    "ttls_max": 60,
+    "ttls_median": 60.0,
+    "ttls_stddev": 0.0,
+    "country_codes": [],
+    "country_count": 0,
+    "locations": [],
+    "locations_count": 0,
+    "asns": [],
+    "asns_count": 0,
+    "non_routable": false,
+    "mail_exchanger": false,
+    "geo_distance_sum": 0.0,
+    "geo_distance_mean": 0.0,
+    "rips_stability": 1.0,
+    "rips": 0,
+    "div_rips": "NaN",
+    "ff_candidate": false,
+    "prefixes": [],
+    "prefixes_count": 0,
+    "cname": true
+  }
+}

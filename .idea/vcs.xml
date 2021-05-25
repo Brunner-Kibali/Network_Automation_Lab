@@ -6,6 +6,7 @@
     <mapping directory="$PROJECT_DIR$/DevAsc/CodeSamples" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/DevAsc/CodeSamples/Python/Networking/DNA/dnac-python-path-trace" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/DevAsc/GitExample2" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/dne-security-code" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/globomantics_crm" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/managing-cisco-networks-infrastructure-as-code/05/demos/m5/yang_oc" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/managing-cisco-networks-infrastructure-as-code/06/demos/m6/yang_big" vcs="Git" />
